@@ -1,9 +1,44 @@
-Pagina para meter datos al fetch y enviarlos
+<h1>Prueba de envio de datos estáticos</h1>
+
+<h3>Datos estáticos:</h3>
+<p>
 
 
 
-asdasdasdasd
 
+</p>
 
+<br><br><br>
+<button style="width: 100px; height: 50px" onclick="send()">Enviar datos</button>
 
-<script src="../assets/js/Envio.js"></script>
+{{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+{{!-- <script src="../assets/js/Envio.js"></script> --}}
+
+<script>
+    function send(){
+        console.log('asd')
+        var settings = {
+            async: true,
+            crossDomain: true,
+            url: "https://api.simpliroute.com/v1/routes/visits/",
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+            },
+            processData: false,
+            data: '{\n  "title": "Kwik e mart",\n  "address": "742 Evergreen Terrace, Springfield, USA",\n  "latitude": 44.052698,\n  "longitude": -123.020718,\n  "contact_name": "Apu Nahasapeemapetilon",\n  "contact_phone": "+123413123212",\n  "contact_email": "apu@example.com",\n  "reference": "invoice_id",\n  "notes": "Leave at front door",\n  "planned_date": "2025-05-26"\n}',
+        };
+        fetch(settings.url, {
+        method: `${settings.method}`,
+        headers: settings.headers,
+        body: settings.data,
+        }).then((response) => response.json())
+        .then((data) => {
+            console.log('123', data)
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de envío:", error);
+        });
+    }
+</script>
