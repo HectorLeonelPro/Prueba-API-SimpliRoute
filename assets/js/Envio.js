@@ -13,7 +13,7 @@ function send(){
             authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
         },
         processData: false,
-        data: '{\n  "title": "Kwik e mart",\n  "address": "742 Evergreen Terrace, Springfield, USA",\n  "latitude": 44.052698,\n  "longitude": -123.020718,\n  "contact_name": "Apu Nahasapeemapetilon",\n  "contact_phone": "+123413123212",\n  "contact_email": "apu@example.com",\n  "reference": "invoice_id",\n  "notes": "Leave at front door",\n  "planned_date": "2025-05-25"\n}',
+        data: '{\n  "title": "Kwik e mart",\n  "address": "Jose de Escandon 308, Zona Centro",\n  "contact_name": Javier Alejandro",\n  "contact_phone": "+528332187293",\n  "contact_email": "",\n  "reference": "invoice_id",\n  "notes": "Leave at front door",\n  "planned_date": "2025-05-25"\n}',
     };
     fetch(settings.url, {
     method: `${settings.method}`,
