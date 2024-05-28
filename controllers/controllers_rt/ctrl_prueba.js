@@ -46,7 +46,33 @@ const prueba = {
 
         // res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
     },
-    
+
+
+
+
+    rt_consulta_sucursales: async (req,res) => {
+        try {
+            const response = await fetch(`https://api.simpliroute.com/v1/routes/vehicles/${req.body.id}`, {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+                },
+            });
+            const informacion= await response.json();
+
+        console.log(6485468, informacion)
+        res.render('partials/formulario', { INFORMACION : informacion}, (error, html) => {
+            console.log(html)
+            res.json({ INFORMACION : informacion, html })
+        })
+           
+
+        } catch (error) {
+            console.log(error)
+            res.redirect('../pagina-no-encontrada')
+        }
+    }   
     
 }
 

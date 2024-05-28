@@ -49,3 +49,24 @@ function consultaConductor() {
         });
 
 }
+
+
+async function cargarSucursales() {
+
+    let id = document.getElementById('vehicle').value
+
+    fetch("/rt-cargar-sucursales", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id}),
+    }).then((response) => response.json())
+        .then((data) => {
+            document.getElementById('formulario').innerHTML = data.html
+        })
+        .catch((error) => {
+            console.error("Error al cargar la información:", error);
+        });
+
+}
