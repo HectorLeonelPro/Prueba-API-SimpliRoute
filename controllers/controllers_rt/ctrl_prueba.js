@@ -35,6 +35,8 @@ const prueba = {
         });
         plan.data.routes[0].visits = resp
 
+        console.log(plan.data.routes[0].visits)
+
         const response_plan = await fetch(plan.url, {
             method: plan.method,
             headers: plan.headers,
