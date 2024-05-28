@@ -104,19 +104,27 @@ async function send(){
           }
     };
 
-    fetch('/envio-plan', {
-        method: "POST",
+    // fetch('/envio-plan', {
+    //     method: "POST",
+    //     headers: {"content-type": "application/json"},
+    //     body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
+    // }).then((response) => response.json())
+    // .then((data) => {
+    //     console.log('123', data)
+    //     if(data.pla.status == 'completed'){
+    //         alert('Tu ruta ha sido creada correctamente.')
+    //     }
+    // })
+    // .catch((error) => {
+    //     console.error("Error al hacer fetch de envío1:", error);
+    // });
+
+    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=Washington&key=AIzaSyB-SdJotn7v8m_rYM1MD1jcDoKI1H1xOQU', {
+        method: "GET",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
-    }).then((response) => response.json())
-    .then((data) => {
-        console.log('123', data)
-        if(data.pla.status == 'completed'){
-            alert('Tu ruta ha sido creada correctamente.')
-        }
-    })
+    }).then((response) => console.log(response.json()))
     .catch((error) => {
-        console.error("Error al hacer fetch de envío1:", error);
+        console.error("Error al hacer fetch de geolocalizacion:", error);
     });
 
 
