@@ -60,7 +60,7 @@ async function cargarSucursales() {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({id}),
+        body: JSON.stringify({ id }),
     }).then((response) => response.json())
         .then((data) => {
             document.getElementById('formulario').innerHTML = data.html
@@ -69,4 +69,70 @@ async function cargarSucursales() {
             console.error("Error al cargar la información:", error);
         });
 
+}
+
+
+function crearPaquetes(num) {
+   
+    let numero = parseInt(num)
+    document.getElementById('paquetes').innerHTML = ''
+    
+    for (let i = 1; i <= numero; i++) {
+        const paquete = ` 
+
+        <div class="paquete"> 
+
+            <div class="form-group"> 
+
+                <label><b>Paquete ${i}</b></label> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Dirección:</label> 
+
+                <input type="text" id="address_${i}" name="address_${i}"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Latitud:</label> 
+
+                <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Longitud:</label> 
+
+                <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Contacto:</label> 
+
+                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Correo de contacto:</label> 
+
+                <input type="text" id="contact_email_${i}" name="contact_email_${i}"> 
+
+            </div> 
+
+        </div> 
+
+    `; 
+
+   document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete); 
+
+    }
 }

@@ -36,7 +36,7 @@ const prueba = {
             const vehiculos= await response_vehiculos.json();
             const conductores = await response_conductores.json();
 
-        console.log(6485468, vehiculos)
+        // console.log(6485468, vehiculos)
             res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
 
         } catch (error) {
