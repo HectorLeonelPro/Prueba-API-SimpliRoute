@@ -49,7 +49,7 @@
 
             <div id="formulario">
 
-           {{>formulario}}
+                {{>formulario}}
             </div>
 
             {{!-- DATOS EXTRAS --}}
@@ -61,6 +61,22 @@
                 <label>Fecha de Fin:</label>
                 <input type="date" id="end_date" name="end_date">
             </div>
+            <br>
+
+            <div class="form-group" style="text-align:center">
+                <label><b>PAQUETES</b></label>
+            </div>
+            <div class="form-group">
+                <label>Número de paquetes:</label>
+                <input type="number" id="number" name="number" onchange="crearPaquetes(this.value)">
+            </div>
+            {{!-- DATOS PAQUETES --}}
+            <div id="paquetes"> 
+                
+            </div>
+
+            {{!-- BOTON --}}
+
             <div class="form-group">
                 <button type="submit">Enviar</button>
             </div>
