@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="../assets/css/consultas.css" />
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Básico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <form action="/submit" method="POST">
+            <div class="logo-container">
+                <img class="logo" src="../assets/img/logo.png">
+            </div>
+            <br>
+            <br>
+
+            {{!-- DATOS VEHICULO --}}
+            <div class="form-group">
+                <label>Conductor:</label>
+                <select id="driver" name="driver">
+                    <option selected hidden>elige un conductor</option>
+                    {{#each CONDUCTORES}}
+                    {{#if (eq status 'active')}}
+                    <option id="{{id}}">
+                        {{name}}
+                    </option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Vehiculo:</label>
+                <select id="vehicle" name="vehicle">
+                    <option selected hidden>elige un vehiculo</option>
+                    {{#each VEHICULOS}}
+                    {{#if (eq status 'active')}}
+                    <option id="{{id}}">
+                        {{name}}
+                    </option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+
+
+            {{!-- DIRECCION PARTIDA --}}
+            <div class="form-group">
+                <label>Dirección de Partida:</label>
+                <input type="text" id="location_start_address" name="location_start_address">
+            </div>
+            <div class="form-group">
+                <label>Latitud:</label>
+                <input type="text" id="location_start_latitude" name="location_start_latitude">
+            </div>
+            <div class="form-group">
+                <label>Longitud:</label>
+                <input type="text" id="location_start_longitude" name="location_start_longitude">
+            </div>
+
+
+            {{!-- DIRECCION LLEGADA --}}
+            <div class="form-group">
+                <label>Dirección de Llegada:</label>
+                <input type="text" id="location_start_address" name="location_end_address">
+            </div>
+            <div class="form-group">
+                <label>Latitud:</label>
+                <input type="text" id="location_start_latitude" name="location_end_latitude">
+            </div>
+            <div class="form-group">
+                <label>Longitud:</label>
+                <input type="text" id="location_start_longitude" name="location_end_longitude">
+            </div>
+
+            {{!-- DATOS EXTRAS --}}
+            <div class="form-group">
+                <label>Fecha de Inicio:</label>
+                <input type="date" id="start_date" name="start_date">
+            </div>
+            <div class="form-group">
+                <label>Fecha de Fin:</label>
+                <input type="date" id="end_date" name="end_date">
+            </div>
+            <div class="form-group">
+                <button type="submit">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+
+
+<script src="../assets/js/Consultas.js"></script>

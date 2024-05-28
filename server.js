@@ -32,4 +32,5 @@ app.listen(port,()=>{
     console.log(`Link del servidor http://localhost:${port}`)
 })
 
+require('./helpers/index')
 

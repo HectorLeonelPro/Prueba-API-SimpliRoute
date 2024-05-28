@@ -1,0 +1,322 @@
+function send(){
+    console.log('asd')
+
+    // FETCH DE POST
+   
+ 
+
+
+    // FETCH DE GET
+
+    
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: "https://api.simpliroute.com/v1/routes/visits/423354619",
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+        },
+    };
+    fetch(settings.url, {
+    method: `${settings.method}`,
+    headers: settings.headers,
+    }).then((response) => response.json())
+    .then((data) => {
+        console.log('123', data)
+    })
+    .catch((error) => {
+        console.error("Error al hacer fetch de recibir:", error);
+    });
+
+
+}
+
+
+   var settings = {
+        async: true,
+        crossDomain: true,
+        url: "https://api.simpliroute.com/v1/routes/visits/",
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+        },
+        processData: false,
+        data: '{\n  "title": "ENVIO",\n  "address": "742 Evergreen Terrace, Springfield, USA",\n  "latitude": 44.052698,\n  "longitude": -123.020718,\n  "contact_name": "Apu Nahasapeemapetilon",\n  "contact_phone": "+123413123212",\n  "contact_email": "apu@example.com",\n  "reference": "invoice_id",\n  "notes": "Leave at front door",\n  "planned_date": "2024-05-27"\n}',
+    };
+    fetch(settings.url, {
+        method: settings.method,
+        headers: settings.headers,
+        body: settings.data,
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    }).then((data) => {
+        console.log('123', data);
+    }).catch((error) => {
+        console.error("Error al hacer fetch de envío:", error);
+    });
+    
+ 
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: "https://api.simpliroute.com/v1/routes/visits/",
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+        },
+        processData: false,
+        data: 
+        {
+            "name": "Plan CAMILA through API 2024-05-27 12:55:18",
+            "start_date": "2024-05-27",
+            "end_date": "2024-05-27",
+            "routes": [
+              {
+                "driver": "183371",
+                "vehicle": "288202",
+                "planned_date": "2022-09-02",
+                "total_distance": "0",
+                "total_duration": "00:38:00",
+                "total_load": 0,
+                "total_load_percentage": 0,
+                "total_load_2": 0,
+                "total_load_2_percentage": 0,
+                "total_load_3": 0,
+                "total_load_3_percentage": 0,
+                "estimated_time_start": "08:00:00",
+                "estimated_time_end": "08:38:00",
+                "request_status": "created",
+                "comment": null,
+                "location_start_address": "Av. San Borja Sur 486, Cercado de Lima 15036",
+                "location_start_latitude": -12.101389,
+                "location_start_longitude": -77.004534,
+                "location_end_address": "Av. San Borja Sur 486, Cercado de Lima 15036",
+                "location_end_latitude": -12.101389,
+                "location_end_longitude": -77.004534,
+                "visits": [
+                  {
+                    "title": "Order 1234",
+                    "address": "Jirón Vesalio 252, San Borja",
+                    "latitude": -12.105329,
+                    "longitude": -77.005524,
+                    "order": 1,
+                    "load": 1,
+                    "window_start": "09:00:00",
+                    "window_end": "17:00:00",
+                    "duration": "00:10:00",
+                    "contact_name": "David Rosales",
+                    "contact_email": "davidrosales@ejemplo.com, otrocorreo@gmail.com",
+                    "reference": "",
+                    "notes": "Watch out with the dog!",
+                    "planned_date": "2022-09-02",
+                    "estimated_time_arrival": "08:02",
+                    "estimated_time_departure": "08:12",
+                    "request_status": "created"
+                  },
+                  {
+                    "title": "Order 4567",
+                    "address": "Jirón Tasso 423, San Borja",
+                    "latitude": -12.105779,
+                    "longitude": -77.019189,
+                    "order": 2,
+                    "load": 1,"window_start": "09:00:00",
+                    "window_end": "17:00:00",
+                    "duration": "00:10:00",
+                    "contact_name": "David Rosales",
+                    "contact_email": "correo@gmail.com",
+                    "reference": "",
+                    "notes": "Ask for David",
+                    "planned_date": "2022-09-02",
+                    "estimated_time_arrival": "08:20",
+                    "estimated_time_departure": "08:30",
+                    "request_status": "created"
+                  }
+                ]
+              }
+            ]
+          }
+    };
+    fetch(settings.url, {
+        method: settings.method,
+        headers: settings.headers,
+        body: settings.data,
+    }).then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+    }).then((data) => {
+        console.log('123', data);
+    }).catch((error) => {
+        console.error("Error al hacer fetch de envío:", error);
+    });
+    
+ 
+
+
+//DATA QUE YO USE DE PRUEBA 
+
+`{
+            "name": "Plan 49678978 through API 2024-05-27 12:55:18",
+            "start_date": "2024-05-27",
+            "end_date": "2024-05-27",
+            "routes": [
+              {
+                "driver": "348263",
+                "vehicle": "478601",
+                "planned_date": "2024-05-27",
+                "total_distance": "0",
+                "total_duration": "00:38:00",
+                "total_load": 0,
+                "total_load_percentage": 0,
+                "total_load_2": 0,
+                "total_load_2_percentage": 0,
+                "total_load_3": 0,
+                "total_load_3_percentage": 0,
+                "estimated_time_start": "08:00:00",
+                "estimated_time_end": "08:38:00",
+                "request_status": "created",
+                "comment": null,
+                "location_start_address": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
+                "location_start_latitude": 22.17167,
+                "location_start_longitude": 97.52146,
+                "location_end_address": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
+                "location_end_latitude": 22.17167,
+                "location_end_longitude": 97.52146,
+                "visits": [
+                  {
+                    "title": "PEDIDO CAMI 7",
+                    "address": "Calle centenario y 1922, Zona Centro, 92030, Pueblo Viejo Veracruz",
+                    "order": 1,
+                    "load": 1,
+                    "window_start": "09:00:00",
+                    "window_end": "17:00:00",
+                    "duration": "00:10:00",
+                    "contact_name": "Camila Flores",
+                    "contact_email": "camila@prointernet.mx",
+                    "reference": "88",
+                    "notes": "Watch out with the dog!",
+                    "planned_date": "2024-05-27",
+                    "estimated_time_arrival": "08:02",
+                    "estimated_time_departure": "08:12",
+                    "request_status": "created"
+                  },
+                  {
+                    "title": "LEONEL PEDIDO 8",
+                    "address": "Calle José de Escandón 308, Zona Centro, Tampico, Tamps.",
+                    "order": 2,
+                    "load": 1,"window_start": "09:00:00",
+                    "window_end": "17:00:00",
+                    "duration": "00:10:00",
+                    "contact_name": "Hector Rodriguez",
+                    "contact_email": "hector@prointernet.mx",
+                    "reference": "88",
+                    "notes": "Ask for Leo",
+                    "planned_date": "2024-05-27",
+                    "estimated_time_arrival": "08:20",
+                    "estimated_time_departure": "08:30",
+                    "request_status": "created"
+                  }
+                ]
+              }
+            ]
+        }`
+
+
+
+        
+    var settings = {
+        
+        async: true,
+        crossDomain: true,
+        url: "https://api.simpliroute.com/v1/plans/create-plan/",
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+        },
+        processData: false,                              
+        data:`{
+            "name": "camila prueba smdsfxzmcvboovb",
+            "routes": [
+              {
+                "driver": "348263",
+                "vehicle": "478601",
+                "planned_date": "2024-05-27",
+                "estimated_time_start": "08:00:00",
+                "estimated_time_end": "08:38:00",
+                "request_status": "created",
+                "location_start_address": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
+                "location_start_latitude": 22.17167,
+                "location_start_longitude": 97.52146,
+                "location_end_address": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
+                "location_end_latitude": 22.17167,
+                "location_end_longitude": 97.52146,
+                "visits": [
+                    {
+                        "title": "Order 8746879",
+                        "address": "Calle José de Escandón 308, Zona Centro, Tampico, Tamps.",
+                        "contact_name": "David Rosales",
+                        "contact_email": "davidrosales@ejemplo.com, otrocorreo@gmail.com",
+                        "reference": "",
+                        "notes": "Watch out with the dog!",
+                        "planned_date": "2024-05-27",
+                        "request_status": "created"
+                    },
+                    {
+                      "title": "Order ca",
+                      "address": "Calle Centenario y 1922, Zona Centro, 92030, Pueblo Viejo Veracruz",
+                      "contact_name": "David Rosales",
+                      "contact_email": "davidrosales@ejemplo.com, otrocorreo@gmail.com",
+                      "reference": "",
+                      "notes": "Watch out with the dog!",
+                      "planned_date": "2024-05-27",
+                      "request_status": "created"
+                    }
+                   
+                ], 
+                "balance": true, 
+                "fmv":2.0,
+                "use_euclidean_distance":true, 
+                "intensive_intra":true 
+              }
+            ]
+  
+          }`
+            
+    };
+    fetch(settings.url, {
+        method: `${settings.method}`,
+        headers: settings.headers,
+        body: settings.data,
+
+    }).then((response) => response.json())
+        .then((data) => {
+            console.log('123', data)
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de recibir:", error);
+        });
+
+
+
+{{!-- <h1>Prueba de consultas</h1>
+
+<h3>Datos estáticos:</h3>
+<p>
+
+
+
+
+</p>
+
+<br><br><br>
+<button style="width: 100px; height: 50px" onclick="consultaVehiculos()">Consultar vehiculos</button>
+<button style="width: 100px; height: 50px" onclick="consultaConductor()">Consultar conductor</button> --}}
