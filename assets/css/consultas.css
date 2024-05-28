@@ -72,3 +72,11 @@ form h2 {
 
     text-align: center;
 }
+.form-double-group{
+    display: flex;
+    justify-content: space-between;  
+}
+
+.form-double-group .form-group:last-child {
+    margin-right: 0;
+}

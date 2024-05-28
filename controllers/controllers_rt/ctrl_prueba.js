@@ -63,9 +63,7 @@ const prueba = {
             });
             const informacion= await response.json();
 
-        console.log(6485468, informacion)
         res.render('partials/formulario', { INFORMACION : informacion}, (error, html) => {
-            console.log(html)
             res.json({ INFORMACION : informacion, html })
         })
            

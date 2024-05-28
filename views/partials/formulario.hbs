@@ -4,16 +4,19 @@
     <input type="text" id="location_start_address" name="location_start_address"
         value="{{INFORMACION.location_start_address}}" disabled>
 </div>
-<div class="form-group">
-    <label>Latitud:</label>
-    <input type="text" id="location_start_latitude" name="location_start_latitude"
-        value="{{INFORMACION.location_start_latitude}}" disabled>
+<div class="form-double-group">
+    <div class="form-group">
+        <label>Latitud:</label>
+        <input type="text" id="location_start_latitude" name="location_start_latitude"
+            value="{{INFORMACION.location_start_latitude}}" disabled>
+    </div>
+    <div class="form-group">
+        <label>Longitud:</label>
+        <input type="text" id="location_start_longitude" name="location_start_longitude"
+            value="{{INFORMACION.location_start_longitude}}" disabled>
+    </div>
 </div>
-<div class="form-group">
-    <label>Longitud:</label>
-    <input type="text" id="location_start_longitude" name="location_start_longitude"
-        value="{{INFORMACION.location_start_longitude}}" disabled>
-</div>
+
 
 
 {{!-- DIRECCION LLEGADA --}}
@@ -22,7 +25,8 @@
     <input type="text" id="location_end_address" name="location_end_address"
         value="{{INFORMACION.location_end_address}}" disabled>
 </div>
-<div class="form-group">
+<div class="form-double-group">
+    <div class="form-group">
     <label>Latitud:</label>
     <input type="text" id="location_end_latitude" name="location_end_latitude"
         value="{{INFORMACION.location_end_latitude}}" disabled>
@@ -31,4 +35,5 @@
     <label>Longitud:</label>
     <input type="text" id="location_end_longitude" name="location_end_longitude"
         value="{{INFORMACION.location_end_longitude}}" disabled>
+</div>
 </div>

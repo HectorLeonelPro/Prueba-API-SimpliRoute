@@ -73,10 +73,10 @@ async function cargarSucursales() {
 
 
 function crearPaquetes(num) {
-   
+
     let numero = parseInt(num)
     document.getElementById('paquetes').innerHTML = ''
-    
+
     for (let i = 1; i <= numero; i++) {
         const paquete = ` 
 
@@ -96,22 +96,27 @@ function crearPaquetes(num) {
 
             </div> 
 
+            <div class="form-double-group">
+            
             <div class="form-group"> 
 
-                <label>Latitud:</label> 
+            <label>Latitud:</label> 
 
-                <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
+            <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
 
-            </div> 
+        </div> 
 
-            <div class="form-group"> 
+        <div class="form-group"> 
 
-                <label>Longitud:</label> 
+            <label>Longitud:</label> 
 
-                <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
+            <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
 
-            </div> 
+        </div> 
 
+            </div>
+
+           
             <div class="form-group"> 
 
                 <label>Contacto:</label> 
@@ -130,9 +135,15 @@ function crearPaquetes(num) {
 
         </div> 
 
-    `; 
+    `;
 
-   document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete); 
+        document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
 
     }
+}
+
+
+function validar(input) {
+    input.value = input.value.replace(/e/gi, '');
+    input.value = input.value.replace(/-/g, '');
 }
