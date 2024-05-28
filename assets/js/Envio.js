@@ -1,8 +1,4 @@
-function send(){
-    console.log('asd')
-
-    // FETCH DE POST
-
+async function send(){
    var settingsRoute = {
         async: true,
         crossDomain: true,
@@ -81,7 +77,7 @@ function send(){
         },
         processData: false,                              
         data:{
-            name: "camila prueba aaaaaa",
+            name: "",
             routes: [
               {
                 driver: "348263",
@@ -107,84 +103,21 @@ function send(){
             ]
           }
     };
-    
-    fetch(settingsRoute.url, {
-    method: `${settingsRoute.method}`,
-    headers: settingsRoute.headers,
-    body: settingsRoute.data,
+
+    fetch('/envio-plan', {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
     }).then((response) => response.json())
     .then((data) => {
         console.log('123', data)
-
-        settingsPlan.data.name = data.id
-        const arr = JSON.parse(JSON.stringify(data.vehicles[0].tours[0].nodes));
-        var res = arr.map(item => {
-            item.address = item.ident;
-            item.title = "Orden " + item.order
-            item.planned_date = settingsPlan.data.routes[0].planned_date
-            item.request_status = "created"
-            item.contact_name = ""
-            item.contact_email = ""
-            item.notes = ""
-            item.reference = ""
-            delete item.ident;
-            delete item.load;
-            delete item.load_2;
-            delete item.load_3;
-            delete item.arrival;
-            delete item.departure;
-            delete item.lat;
-            delete item.lon;
-            delete item.priority;
-            return item;
-        });
-        settingsPlan.data.routes[0].visits[0] = res
-
-        console.log(321, settingsPlan.data)
-        
-        
-
+        if(data.pla.status == 'completed'){
+            alert('Tu ruta ha sido creada correctamente.')
+        }
     })
     .catch((error) => {
-        console.error("Error al hacer fetch de envío:", error);
-    });
-
-    fetch(settingsPlan.url, {
-        method: `${settingsPlan.method}`,
-        headers: settingsPlan.headers,
-        body: JSON.stringify(settingsPlan.data),
-    }).then((response1) => response1.json())
-    .then((data1) => {
-        console.log('123', data1)
-        
-    })
-    .catch((error1) => {
-        console.error("Error al hacer fetch de envío1:", error1);
+        console.error("Error al hacer fetch de envío1:", error);
     });
 
 
-
-    // FETCH DE GET
-
-
-    // var settingsRoute = {
-    //     async: true,
-    //     crossDomain: true,
-    //     url: "https://api.simpliroute.com/v1/routes/visits/1231231/",
-    //     method: "DELETE",
-    //     headers: {
-    //         "content-type": "application/json",
-    //         authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
-    //     },
-    // };
-    // fetch(settingsRoute.url, {
-    // method: `${settingsRoute.method}`,
-    // headers: settingsRoute.headers,
-    // }).then((response) => response.json())
-    // .then((data) => {
-    //     console.log('123', data)
-    // })
-    // .catch((error) => {
-    //     console.error("Error al hacer fetch de envío:", error);
-    // });
 }
