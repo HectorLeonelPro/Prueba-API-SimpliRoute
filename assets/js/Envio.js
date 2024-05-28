@@ -119,10 +119,13 @@ async function send(){
     //     console.error("Error al hacer fetch de envío1:", error);
     // });
 
-    fetch('https://maps.googleapis.com/maps/api/geocode/json?address=Washington&key=AIzaSyB-SdJotn7v8m_rYM1MD1jcDoKI1H1xOQU', {
+    fetch('https://api.mapbox.com/search/geocode/v6/forward?q=Mil%Novecientos%Veintidós%102%,%Zona%Centro%,%92030%,%Pueblo%Viejo%Veracruz&limit=1&access_token=pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA', {
         method: "GET",
         headers: {"content-type": "application/json"},
-    }).then((response) => console.log(response.json()))
+    }).then((response) => (response.json()))
+    .then((data) => {
+        console.log(data)
+    })
     .catch((error) => {
         console.error("Error al hacer fetch de geolocalizacion:", error);
     });
