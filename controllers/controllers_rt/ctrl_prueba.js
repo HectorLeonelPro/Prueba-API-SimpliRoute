@@ -82,7 +82,23 @@ const prueba = {
             console.log(error)
             res.redirect('../pagina-no-encontrada')
         }
-    }
+    },
+    rt_geolocalizacion_inversa: async (req, res) => {
+        let lat = req.body.latlng.lat
+        let lon = req.body.latlng.lng
+        
+        try {
+            const response = await fetch(`https://api.mapbox.com/search/geocode/v6/reverse?&longitude=${lon}&latitude=${lat}&limit=1&access_token=${process.env.MAPBOX_KEY}`, {
+                method: "GET",
+                headers: {"content-type": "application/json",},
+            });
+            const informacion = await response.json();
+            res.json({ geo: informacion })
+        } catch (error) {
+            console.log(error)
+            res.redirect('../pagina-no-encontrada')
+        }
+    },
     
 }
 

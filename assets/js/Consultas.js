@@ -178,7 +178,21 @@ async function consultaGeolocalizacion(direccion, id){
     var marker = L.marker([latitude, longitude]).addTo(map);
 }
 
-function onMapClick(e) {
+async function consultaGeolocalizacionInversa(latlng, paquete){
+    const data = await fetch(`/geolocalizacion_inversa`, {
+        method: "POST",
+        headers: {"content-type": "application/json"},
+        body: JSON.stringify({latlng})
+        }).then((response) => (response.json()))
+        .catch((error) => {
+            console.error("Error al hacer fetch de geolocalizacion:", error);
+        });
+        console.log(data)
+    let address = data.geo.features[0].properties.full_address
+    document.getElementById(`address_${paquete}`).value = address
+}
+
+async function onMapClick(e) {
     console.log(e)
     let latlon = e.latlng; 
     let paquete = e.target._container.id.split('_')[1]
@@ -189,6 +203,7 @@ function onMapClick(e) {
     var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
     var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
+    await consultaGeolocalizacionInversa(latlon, paquete)
 }
 
 function crearRuta(e){
