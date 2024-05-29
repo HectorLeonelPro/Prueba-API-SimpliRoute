@@ -32,7 +32,7 @@
                     <option selected hidden>Elige un conductor</option>
                     {{#each CONDUCTORES}}
                     {{#if (eq status 'active')}}
-                    <option id="{{id}}">
+                    <option id="{{id}}" value="{{id}}">
                         {{name}}
                     </option>
                     {{/if}}
@@ -45,7 +45,7 @@
                     <option selected hidden>Elige un vehiculo</option>
                     {{#each VEHICULOS}}
                     {{#if (eq status 'active')}}
-                    <option value="{{id}}">
+                    <option id="{{id}}" value="{{id}}">
                         {{name}}
                     </option>
                     {{/if}}

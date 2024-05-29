@@ -6,7 +6,7 @@ const prueba = {
         const response_optimizar = await fetch(optimizar.url, {
             method: optimizar.method,
             headers: optimizar.headers,
-            body: optimizar.data,
+            body: JSON.stringify(optimizar.data),
         });
         
         const opt = await response_optimizar.json();
@@ -22,6 +22,7 @@ const prueba = {
             item.contact_email = ""
             item.notes = ""
             item.reference = ""
+            item.order = item.order+1
             delete item.ident;
             delete item.load;
             delete item.load_2;
@@ -35,14 +36,14 @@ const prueba = {
         });
         plan.data.routes[0].visits = resp
 
-        console.log(plan.data.routes[0].visits)
-
         const response_plan = await fetch(plan.url, {
             method: plan.method,
             headers: plan.headers,
             body: JSON.stringify(plan.data),
         });
         const pla = await response_plan.json();
+
+        console.log(pla)
 
         res.json({pla})
 

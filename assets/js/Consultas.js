@@ -95,7 +95,7 @@ function crearPaquetes(num) {
 
             </div> 
 
-            <div class="form-group"> 
+            <div class="form-group" id="mapa_${i}"> 
 
                 <div class="map" id="map_${i}"></div>
 
@@ -142,10 +142,7 @@ function crearPaquetes(num) {
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
         var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
     ;
 
     }
@@ -172,8 +169,10 @@ function consultaGeolocalizacion(direccion, id){
         let longitude = data.geo.features[0].properties.coordinates.longitude
         document.getElementById(`latitude_${paquete}`).value = latitude
         document.getElementById(`longitude_${paquete}`).value = longitude
-        document.getElementById(`map_${paquete}`).
-        var marker = L.marker([latitude, longitude]).addTo(L.map(`map_${paquete}`));
+        document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
+        var map = L.map(`map_${paquete}`).setView([latitude, longitude], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+        var marker = L.marker([latitude, longitude]).addTo(map);
         // L.map(`map_${paquete}`).setView([latitude, longitude], 13);
         
     })
@@ -232,37 +231,37 @@ function crearRuta(e){
                 authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
             },
             processData: false,
-            data: `{
-                "name": "5466564",
-                "vehicles": [
+            data: {
+                name: "5466564",
+                vehicles: [
                     {
-                        "ident": "${ident_vehicle}",
-                        "location_start": {
-                            "ident": "${ident_start}",
-                            "lat": ${lat_start},
-                            "lon": ${lon_start}
+                        ident: ident_vehicle,
+                        location_start: {
+                            ident: ident_start,
+                            lat: lat_start,
+                            lon: lon_start
                         },
-                        "location_end": {
-                            "ident": "${ident_end}",
-                            "lat": ${lat_end},
-                            "lon": ${lon_end}
+                        location_end: {
+                            ident: ident_end,
+                            lat: lat_end,
+                            lon: lon_end
                         },
-                        "capacity": 3500,
-                        "capacity_2": 3500,
-                        "capacity_3": 3500,
-                        "shift_start": "9:00",
-                        "shift_end": "22:00",
-                        "skills": []
+                        capacity: 3500,
+                        capacity_2: 3500,
+                        capacity_3: 3500,
+                        shift_start: "9:00",
+                        shift_end: "22:00",
+                        skills: []
                     }
                 ],
-                "nodes": ${nodos},
-                "balance": true,
-                "all_vehicles": false,
-                "join": true,
-                "open_ended": false,
-                "single_tour": true,
-                "fmv": 1.0
-            }`
+                nodes: nodos,
+                balance: true,
+                all_vehicles: false,
+                join: true,
+                open_ended: false,
+                single_tour: true,
+                fmv: 1.0
+            }
         };
         var settingsPlan = {
             async: true,
@@ -274,22 +273,22 @@ function crearRuta(e){
                 authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
             },
             processData: false,                              
-            data:`{
+            data:{
                 name: "",
                 routes: [
                   {
-                    driver: "${driver}",
-                    vehicle: "${ident_vehicle}",
-                    planned_date: "${start_date}",
+                    driver: driver,
+                    vehicle: ident_vehicle,
+                    planned_date: start_date,
                     estimated_time_start: "08:00:00",
-                    estimated_time_end: "08:38:00",
+                    estimated_time_end: "19:40:00",
                     request_status: "created",
-                    location_start_address: "${ident_start}",
-                    location_start_latitude: ${lat_start}, 
-                    location_start_longitude: ${lon_start},
-                    location_end_address: "${ident_end}",
-                    location_end_latitude: ${lat_end},
-                    location_end_longitude:${lon_end} ,
+                    location_start_address: ident_start,
+                    location_start_latitude: lat_start, 
+                    location_start_longitude: lon_start,
+                    location_end_address: ident_end,
+                    location_end_latitude: lat_end,
+                    location_end_longitude:lon_end ,
                     visits: [
                         
                     ], 
@@ -299,7 +298,7 @@ function crearRuta(e){
                     intensive_intra:true 
                   }
                 ]
-              }`
+              }
         };
     
         fetch('/envio-plan', {
