@@ -53,6 +53,7 @@ function consultaConductor() {
 async function cargarSucursales() {
 
     let id = document.getElementById('vehicle').value
+    
 
     fetch("/rt-cargar-sucursales", {
         method: "POST",
@@ -100,7 +101,7 @@ function crearPaquetes(num) {
 
             <label>Latitud:</label> 
 
-            <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
+            <input type="text" id="latitude_${i}" name="latitude_${i}" > 
 
         </div> 
 
@@ -108,7 +109,7 @@ function crearPaquetes(num) {
 
             <label>Longitud:</label> 
 
-            <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
+            <input type="text" id="longitude_${i}" name="longitude_${i}"> 
 
         </div> 
 
@@ -161,129 +162,147 @@ function consultaGeolocalizacion(direccion){
     });
 }
 
-function crearRuta(){
-    //    var settingsRoute = {
-//         async: true,
-//         crossDomain: true,
-//         url: "https://optimizator.simpliroute.com/vrp/optimize/sync/",
-//         method: "POST",
-//         headers: {
-//             "content-type": "application/json",
-//             authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
-//         },
-//         processData: false,
-//         data: `{
-//             "name": "Prueba",
-//             "vehicles": [
-//                 {
-//                     "ident": "Vehicle 1",
-//                     "location_start": {
-//                         "ident": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
-//                         "lat": 22.1716,
-//                         "lon": -97.5214
-//                     },
-//                     "location_end": {
-//                         "ident": "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
-//                         "lat": 22.1716,
-//                         "lon": -97.5214
-//                     },
-//                     "capacity": 3500,
-//                     "capacity_2": 3500,
-//                     "capacity_3": 3500,
-//                     "shift_start": "9:00",
-//                     "shift_end": "22:00",
-//                     "skills": []
-//                 }
-//             ],
-//             "nodes": [
-//                 {
-//                     "ident": "Calle Centenario y 1922, Zona Centro, 92030, Pueblo Viejo Veracruz",
-//                     "address": "Calle Centenario y 1922, Zona Centro, 92030, Pueblo Viejo Veracruz",
-//                     "lat": 22.2215,
-//                     "lon": -97.8585,
-//                     "load": 77,
-//                     "window_start": "09:00",
-//                     "window_end": "17:00",
-//                     "window_start_2": "19:00",
-//                     "window_end_2": "22:00",
-//                     "duration": 10
-//                 },
-//                 {
-//                     "ident": "Calle José de Escandón 308, Zona Centro, Tampico, Tamps.",
-//                     "address": "Calle José de Escandón 308, Zona Centro, Tampico, Tamps.",
-//                     "lat": 22.1819,
-//                     "lon": -97.8365,
-//                     "load": 2530,
-//                     "window_start": "9:00",
-//                     "window_end": "11:00",
-//                     "window_start_2": "19:00",
-//                     "window_end_2": "22:00",
-//                     "duration": 15
-//                 }
-//             ],
-//             "balance": true,
-//             "all_vehicles": false,
-//             "join": true,
-//             "open_ended": false,
-//             "single_tour": true,
-//             "fmv": 1.0
-//         }`
-//     };
-//     var settingsPlan = {
-//         async: true,
-//         crossDomain: true,
-//         url: "https://api.simpliroute.com/v1/plans/create-plan/",
-//         method: "POST",
-//         headers: {
-//             "content-type": "application/json",
-//             authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
-//         },
-//         processData: false,                              
-//         data:{
-//             name: "",
-//             routes: [
-//               {
-//                 driver: "348263",
-//                 vehicle: "478602",
-//                 planned_date: "2024-05-28",
-//                 estimated_time_start: "08:00:00",
-//                 estimated_time_end: "08:38:00",
-//                 request_status: "created",
-//                 location_start_address: "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
-//                 location_start_latitude: 22.17167,
-//                 location_start_longitude: -97.52146,
-//                 location_end_address: "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
-//                 location_end_latitude: 22.17167,
-//                 location_end_longitude: -97.52146,
-//                 visits: [
-                    
-//                 ], 
-//                 balance: true, 
-//                 fmv:2.0,
-//                 use_euclidean_distance:true, 
-//                 intensive_intra:true 
-//               }
-//             ]
-//           }
-//     };
+function crearRuta(e){
+    e.preventDefault()
 
-    // fetch('/envio-plan', {
-    //     method: "POST",
-    //     headers: {"content-type": "application/json"},
-    //     body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
-    // }).then((response) => response.json())
-    // .then((data) => {
-    //     console.log('123', data)
-    //     if(data.pla.status == 'completed'){
-    //         alert('Tu ruta ha sido creada correctamente.')
-    //     }
-    // })
-    // .catch((error) => {
-    //     console.error("Error al hacer fetch de envío1:", error);
-    // });
 
-    console.log('AQUI ES DONDE ENTRARIAN LOS DATOS DE LAS DIRECCIONES, ADEMÁS DE LOS PRIMEROS DATOS DEL FORMULARIO, LA DIRECCION Y LATITUD Y ESO.')
-    console.log('EL SETTINGSROUTE ES EL QUE TE CREA LA RUTA OPTIMA, ESTE OCUPA UN IDENT, LAT Y LON OBLIGATORIAMENTE, EL IDENT VA A SER LA DIRECCION QUE ESCRIBAMOS.')
-    console.log('EL SETTINGS PLAN ES EL QUE CREA EL PLAN PARA EL ENVIO, AQUI NO VAS A CAMBIAR MUCHO, LO UNICO QUE CAMBIARIAS SERIAN LOS CAMPOS DE LOCATION_START Y END PARA QUE SEAN LOS QUE TIENES AL PRINCIPIO EN LA PRIMER PARTE DEL FORMULARIO, TU PUEDES TQM.')
+        let nodos = [];
+        let numPaquetes = (document.getElementById('paquetes').children).length;
 
+            
+        let  ident_vehicle= document.getElementById('vehicle').value
+        let  ident_start= document.getElementById('location_start_address').value
+        let  lat_start= document.getElementById('location_start_latitude').value
+        let  lon_start= document.getElementById('location_start_longitude').value
+        let  ident_end= document.getElementById('location_end_address').value
+        let  lat_end= document.getElementById('location_end_latitude').value
+        let  lon_end= document.getElementById('location_end_longitude').value
+        let  driver = document.getElementById('driver').value
+        let start_date = document.getElementById('start_date').value
+        let end_date = document.getElementById('end_date').value
+        
+
+        for (let i = 0; i < numPaquetes; i++) {
+            let address = document.getElementById(`address_${i + 1}`).value;
+            let lat = document.getElementById(`latitude_${i + 1}`).value;
+            let lon = document.getElementById(`longitude_${i + 1}`).value;
+            let contact_name = document.getElementById(`contact_name_${i + 1}`).value;
+            let contact_email= document.getElementById(`contact_email_${i + 1}`).value;
+
+            nodos.push({
+                ident: address,
+                address: address,
+                lat: lat,
+                lon: lon,
+                load: 77,
+                window_start: "09:00",
+                window_end: "17:00",
+                window_start_2: "19:00",
+                window_end_2: "22:00",
+                duration: 10
+            });
+        }
+
+        console.log(99999,nodos)
+
+    
+           var settingsRoute = {
+            async: true,
+            crossDomain: true,
+            url: "https://optimizator.simpliroute.com/vrp/optimize/sync/",
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            },
+            processData: false,
+            data: `{
+                "name": "5466564",
+                "vehicles": [
+                    {
+                        "ident": "${ident_vehicle}",
+                        "location_start": {
+                            "ident": "${ident_start}",
+                            "lat": ${lat_start},
+                            "lon": ${lon_start}
+                        },
+                        "location_end": {
+                            "ident": "${ident_end}",
+                            "lat": ${lat_end},
+                            "lon": ${lon_end}
+                        },
+                        "capacity": 3500,
+                        "capacity_2": 3500,
+                        "capacity_3": 3500,
+                        "shift_start": "9:00",
+                        "shift_end": "22:00",
+                        "skills": []
+                    }
+                ],
+                "nodes": ${nodos},
+                "balance": true,
+                "all_vehicles": false,
+                "join": true,
+                "open_ended": false,
+                "single_tour": true,
+                "fmv": 1.0
+            }`
+        };
+        var settingsPlan = {
+            async: true,
+            crossDomain: true,
+            url: "https://api.simpliroute.com/v1/plans/create-plan/",
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            },
+            processData: false,                              
+            data:`{
+                name: "",
+                routes: [
+                  {
+                    driver: "${driver}",
+                    vehicle: "${ident_vehicle}",
+                    planned_date: "${start_date}",
+                    estimated_time_start: "08:00:00",
+                    estimated_time_end: "08:38:00",
+                    request_status: "created",
+                    location_start_address: "${ident_start}",
+                    location_start_latitude: ${lat_start}, 
+                    location_start_longitude: ${lon_start},
+                    location_end_address: "${ident_end}",
+                    location_end_latitude: ${lat_end},
+                    location_end_longitude:${lon_end} ,
+                    visits: [
+                        
+                    ], 
+                    balance: true, 
+                    fmv:2.0,
+                    use_euclidean_distance:true, 
+                    intensive_intra:true 
+                  }
+                ]
+              }`
+        };
+    
+        fetch('/envio-plan', {
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
+        }).then((response) => response.json())
+        .then((data) => {
+            console.log('123', data)
+            if(data.pla.status == 'completed'){
+                alert('Tu ruta ha sido creada correctamente.')
+            }else{
+                alert('Tu ruta no se creo.')
+    
+            }
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de envío1:", error);
+        });
+
+   
 }
