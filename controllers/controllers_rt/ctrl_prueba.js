@@ -22,7 +22,7 @@ const prueba = {
             item.contact_email = ""
             item.notes = ""
             item.reference = ""
-            item.order = item.order+1
+            item.order = item.order
             delete item.ident;
             delete item.load;
             delete item.load_2;
@@ -34,6 +34,8 @@ const prueba = {
             delete item.priority;
             return item;
         });
+
+        resp.splice(0,1)
         plan.data.routes[0].visits = resp
 
         const response_plan = await fetch(plan.url, {
@@ -42,8 +44,6 @@ const prueba = {
             body: JSON.stringify(plan.data),
         });
         const pla = await response_plan.json();
-
-        console.log(pla)
 
         res.json({pla})
 

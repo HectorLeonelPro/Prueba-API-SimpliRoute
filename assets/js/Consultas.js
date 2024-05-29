@@ -141,7 +141,7 @@ function crearPaquetes(num) {
 
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
-        var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13);
+        var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13).on('click', onMapClick);
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
     ;
 
@@ -153,32 +153,41 @@ function validar(input) {
     input.value = input.value.replace(/-/g, '');
 }
 
-function consultaGeolocalizacion(direccion, id){
+async function consultaGeolocalizacion(direccion, id){
     let parametro = direccion
     parametro.replace(' ', '%')
     parametro.replace(',', '%,')
     let paquete = id.split('_')[1]
 
-    fetch(`/geolocalizacion`, {
+    const data = await fetch(`/geolocalizacion`, {
         method: "POST",
         headers: {"content-type": "application/json"},
         body: JSON.stringify({parametro})
-    }).then((response) => (response.json()))
-    .then((data) => {
-        let latitude = data.geo.features[0].properties.coordinates.latitude
-        let longitude = data.geo.features[0].properties.coordinates.longitude
-        document.getElementById(`latitude_${paquete}`).value = latitude
-        document.getElementById(`longitude_${paquete}`).value = longitude
-        document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
-        var map = L.map(`map_${paquete}`).setView([latitude, longitude], 13);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-        var marker = L.marker([latitude, longitude]).addTo(map);
-        // L.map(`map_${paquete}`).setView([latitude, longitude], 13);
-        
-    })
-    .catch((error) => {
-        console.error("Error al hacer fetch de geolocalizacion:", error);
-    });
+        }).then((response) => (response.json()))
+        .catch((error) => {
+            console.error("Error al hacer fetch de geolocalizacion:", error);
+        });
+
+    let latitude = data.geo.features[0].properties.coordinates.latitude
+    let longitude = data.geo.features[0].properties.coordinates.longitude
+    document.getElementById(`latitude_${paquete}`).value = latitude
+    document.getElementById(`longitude_${paquete}`).value = longitude
+    document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
+    const map = L.map(`map_${paquete}`).setView([latitude, longitude], 13).on('click', onMapClick);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    var marker = L.marker([latitude, longitude]).addTo(map);
+}
+
+function onMapClick(e) {
+    let latlon = e.latlng; 
+    let paquete = e.target._container.id.split('_')[1]
+    
+    document.getElementById(`latitude_${paquete}`).value = latlon.lat
+    document.getElementById(`longitude_${paquete}`).value = latlon.lng
+    document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
+    var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
 }
 
 function crearRuta(e){
