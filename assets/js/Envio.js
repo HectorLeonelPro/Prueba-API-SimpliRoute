@@ -130,5 +130,4 @@ async function send(){
         console.error("Error al hacer fetch de geolocalizacion:", error);
     });
 
-
 }

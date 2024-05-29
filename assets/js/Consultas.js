@@ -179,6 +179,7 @@ async function consultaGeolocalizacion(direccion, id){
 }
 
 function onMapClick(e) {
+    console.log(e)
     let latlon = e.latlng; 
     let paquete = e.target._container.id.split('_')[1]
     

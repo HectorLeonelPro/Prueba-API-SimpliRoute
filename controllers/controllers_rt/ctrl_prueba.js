@@ -29,8 +29,6 @@ const prueba = {
             delete item.load_3;
             delete item.arrival;
             delete item.departure;
-            delete item.lat;
-            delete item.lon;
             delete item.priority;
             return item;
         });
