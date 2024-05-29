@@ -6,7 +6,7 @@ async function send(){
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
         },
         processData: false,
         data: `{
@@ -73,7 +73,7 @@ async function send(){
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
         },
         processData: false,                              
         data:{

@@ -8,7 +8,7 @@ function consultaVehiculos() {
         method: "GET",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
         },
     };
     fetch(settings.url, {
@@ -34,7 +34,7 @@ function consultaConductor() {
         method: "GET",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 5feae79e649ed6759936980caad4224566b30d39",
+            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
         },
     };
     fetch(settings.url, {
@@ -49,7 +49,6 @@ function consultaConductor() {
         });
 
 }
-
 
 async function cargarSucursales() {
 
@@ -70,7 +69,6 @@ async function cargarSucursales() {
         });
 
 }
-
 
 function crearPaquetes(num) {
 
@@ -116,7 +114,6 @@ function crearPaquetes(num) {
 
             </div>
 
-           
             <div class="form-group"> 
 
                 <label>Contacto:</label> 
@@ -141,7 +138,6 @@ function crearPaquetes(num) {
 
     }
 }
-
 
 function validar(input) {
     input.value = input.value.replace(/e/gi, '');
