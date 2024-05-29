@@ -16,7 +16,7 @@ function send(){
         method: "GET",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
     };
     fetch(settings.url, {
@@ -41,7 +41,7 @@ function send(){
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
         processData: false,
         data: '{\n  "title": "ENVIO",\n  "address": "742 Evergreen Terrace, Springfield, USA",\n  "latitude": 44.052698,\n  "longitude": -123.020718,\n  "contact_name": "Apu Nahasapeemapetilon",\n  "contact_phone": "+123413123212",\n  "contact_email": "apu@example.com",\n  "reference": "invoice_id",\n  "notes": "Leave at front door",\n  "planned_date": "2024-05-27"\n}',
@@ -69,7 +69,7 @@ function send(){
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
         processData: false,
         data: 
@@ -240,7 +240,7 @@ function send(){
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
         processData: false,                              
         data:`{
@@ -326,22 +326,22 @@ function send(){
                     <label><b>Paquete n</b></label>
                 </div>
                 <div class="form-group">
-                    <label>Dirección:</label>
+                    <label>Dirección: *</label>
                     <input type="text" id="address" name="address">
                 </div>
                 <div class="form-group">
-                    <label>Latitud:</label>
+                    <label>Latitud: *</label>
                     <input type="text" id="latitude" name="latitude" disabled>
                 </div>
                 <div class="form-group">
-                    <label>Longitud:</label>
+                    <label>Longitud: *</label>
                     <input type="text" id="longitude" name="longitude" disabled>
                 </div>
                 <div class="form-group">
-                    <label>Contacto:</label>
+                    <label>Contacto: *</label>
                     <input type="text" id="contact_name" name="contact_name">
                 </div>
                 <div class="form-group">
-                    <label>Correo de contacto:</label>
+                    <label>Correo de contacto: *</label>
                     <input type="text" id="contact_email" name="contact_email">
                 </div>

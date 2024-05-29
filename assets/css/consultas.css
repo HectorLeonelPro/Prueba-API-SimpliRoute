@@ -31,7 +31,6 @@ form h2 {
     margin-bottom: 5px;
     color:  #5c048c
     
-
 }
 
 .form-group input {
@@ -80,3 +79,5 @@ form h2 {
 .form-double-group .form-group:last-child {
     margin-right: 0;
 }
+
+.map { height: 180px; }

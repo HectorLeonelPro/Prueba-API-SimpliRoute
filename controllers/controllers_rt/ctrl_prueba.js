@@ -49,16 +49,13 @@ const prueba = {
         // res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
     },
 
-
-
-
     rt_consulta_sucursales: async (req,res) => {
         try {
             const response = await fetch(`https://api.simpliroute.com/v1/routes/vehicles/${req.body.id}`, {
                 method: "GET",
                 headers: {
                     "content-type": "application/json",
-                    authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+                    authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
                 },
             });
             const informacion= await response.json();
@@ -67,17 +64,27 @@ const prueba = {
             res.json({ INFORMACION : informacion, html })
         })
            
-
         } catch (error) {
             console.log(error)
             res.redirect('../pagina-no-encontrada')
         }
-    }   
+    },
+    rt_geolocalizacion: async (req, res) => {
+        let parametro = req.body.parametro
+
+        try {
+            const response = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?q=${parametro}&limit=1&access_token=${process.env.MAPBOX_KEY}`, {
+                method: "GET",
+                headers: {"content-type": "application/json",},
+            });
+            const informacion = await response.json();
+            res.json({ geo: informacion })
+        } catch (error) {
+            console.log(error)
+            res.redirect('../pagina-no-encontrada')
+        }
+    }
     
 }
-
-
-
-
 
 module.exports = { prueba };

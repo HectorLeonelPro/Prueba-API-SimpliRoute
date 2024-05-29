@@ -1,3 +1,5 @@
+
+
 function consultaVehiculos() {
     console.log('click vehiculo')
 
@@ -8,7 +10,7 @@ function consultaVehiculos() {
         method: "GET",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
     };
     fetch(settings.url, {
@@ -34,7 +36,7 @@ function consultaConductor() {
         method: "GET",
         headers: {
             "content-type": "application/json",
-            authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
         },
     };
     fetch(settings.url, {
@@ -54,7 +56,6 @@ async function cargarSucursales() {
 
     let id = document.getElementById('vehicle').value
     
-
     fetch("/rt-cargar-sucursales", {
         method: "POST",
         headers: {
@@ -72,10 +73,9 @@ async function cargarSucursales() {
 }
 
 function crearPaquetes(num) {
-
     let numero = parseInt(num)
     document.getElementById('paquetes').innerHTML = ''
-
+    
     for (let i = 1; i <= numero; i++) {
         const paquete = ` 
 
@@ -89,9 +89,15 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
-                <label>Dirección:</label> 
+                <label>Dirección: *</label> 
 
-                <input type="text" id="address_${i}" name="address_${i}"> 
+                <input type="text" id="address_${i}" name="address_${i}" onchange="consultaGeolocalizacion(this.value, this.id)"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <div class="map" id="map_${i}"></div>
 
             </div> 
 
@@ -99,17 +105,17 @@ function crearPaquetes(num) {
             
             <div class="form-group"> 
 
-            <label>Latitud:</label> 
+            <label>Latitud: *</label> 
 
-            <input type="text" id="latitude_${i}" name="latitude_${i}" > 
+            <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
 
         </div> 
 
         <div class="form-group"> 
 
-            <label>Longitud:</label> 
+            <label>Longitud: *</label> 
 
-            <input type="text" id="longitude_${i}" name="longitude_${i}"> 
+            <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
 
         </div> 
 
@@ -117,7 +123,7 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
-                <label>Contacto:</label> 
+                <label>Contacto: *</label> 
 
                 <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
 
@@ -125,7 +131,7 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
-                <label>Correo de contacto:</label> 
+                <label>Correo de contacto: *</label> 
 
                 <input type="text" id="contact_email_${i}" name="contact_email_${i}"> 
 
@@ -133,9 +139,14 @@ function crearPaquetes(num) {
 
         </div> 
 
-    `;
-
-        document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
+    `
+    document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
+        var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+    ;
 
     }
 }
@@ -145,17 +156,26 @@ function validar(input) {
     input.value = input.value.replace(/-/g, '');
 }
 
-function consultaGeolocalizacion(direccion){
+function consultaGeolocalizacion(direccion, id){
     let parametro = direccion
     parametro.replace(' ', '%')
     parametro.replace(',', '%,')
-    
-    fetch('https://api.mapbox.com/search/geocode/v6/forward?q=Mil%Novecientos%Veintidós%102%,%Zona%Centro%,%92030%,%Pueblo%Viejo%Veracruz&limit=1&access_token=pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA', {
-        method: "GET",
+    let paquete = id.split('_')[1]
+
+    fetch(`/geolocalizacion`, {
+        method: "POST",
         headers: {"content-type": "application/json"},
+        body: JSON.stringify({parametro})
     }).then((response) => (response.json()))
     .then((data) => {
-        console.log(data)
+        let latitude = data.geo.features[0].properties.coordinates.latitude
+        let longitude = data.geo.features[0].properties.coordinates.longitude
+        document.getElementById(`latitude_${paquete}`).value = latitude
+        document.getElementById(`longitude_${paquete}`).value = longitude
+        document.getElementById(`map_${paquete}`).
+        var marker = L.marker([latitude, longitude]).addTo(L.map(`map_${paquete}`));
+        // L.map(`map_${paquete}`).setView([latitude, longitude], 13);
+        
     })
     .catch((error) => {
         console.error("Error al hacer fetch de geolocalizacion:", error);
@@ -165,11 +185,9 @@ function consultaGeolocalizacion(direccion){
 function crearRuta(e){
     e.preventDefault()
 
-
         let nodos = [];
         let numPaquetes = (document.getElementById('paquetes').children).length;
 
-            
         let  ident_vehicle= document.getElementById('vehicle').value
         let  ident_start= document.getElementById('location_start_address').value
         let  lat_start= document.getElementById('location_start_latitude').value
@@ -181,7 +199,6 @@ function crearRuta(e){
         let start_date = document.getElementById('start_date').value
         let end_date = document.getElementById('end_date').value
         
-
         for (let i = 0; i < numPaquetes; i++) {
             let address = document.getElementById(`address_${i + 1}`).value;
             let lat = document.getElementById(`latitude_${i + 1}`).value;
@@ -205,7 +222,6 @@ function crearRuta(e){
 
         console.log(99999,nodos)
 
-    
            var settingsRoute = {
             async: true,
             crossDomain: true,
@@ -304,5 +320,4 @@ function crearRuta(e){
             console.error("Error al hacer fetch de envío1:", error);
         });
 
-   
 }

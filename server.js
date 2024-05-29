@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express=require('express');
 const hbs=require('hbs');
 
@@ -6,11 +7,9 @@ const app=express();
 const port=process.env.PORT || 3000
 // const init = require('./config/sesion_seq');
 
-
 app.set('view engine','hbs');
 app.set('views',path.join(__dirname,'./views'));
 hbs.registerPartials(path.join(__dirname, `./views/partials`));
-
 
 // Configurar body-parser para manejar datos de formularios
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,4 +32,3 @@ app.listen(port,()=>{
 })
 
 require('./helpers/index')
-
