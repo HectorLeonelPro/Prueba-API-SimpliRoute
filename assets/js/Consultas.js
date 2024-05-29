@@ -145,7 +145,10 @@ function validar(input) {
 }
 
 function consultaGeolocalizacion(direccion){
-    let parametro = direccion.replace(' ', '%')
+    let parametro = direccion
+    parametro.replace(' ', '%')
+    parametro.replace(',', '%,')
+    
     fetch('https://api.mapbox.com/search/geocode/v6/forward?q=Mil%Novecientos%Veintidós%102%,%Zona%Centro%,%92030%,%Pueblo%Viejo%Veracruz&limit=1&access_token=pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA', {
         method: "GET",
         headers: {"content-type": "application/json"},
