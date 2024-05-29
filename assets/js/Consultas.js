@@ -137,7 +137,7 @@ function crearPaquetes(num) {
 
             </div> 
 
-        </div> asd
+        </div>
 
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
