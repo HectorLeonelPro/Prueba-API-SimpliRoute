@@ -89,6 +89,14 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
+                <label>ID de referencia: *</label> 
+
+                <input type="text" id="ref_${i}" name="ref_${i}"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
                 <label>Dirección: *</label> 
 
                 <input type="text" id="address_${i}" name="address_${i}" onchange="consultaGeolocalizacion(this.value, this.id)"> 
@@ -101,39 +109,59 @@ function crearPaquetes(num) {
 
             </div> 
 
-            <div class="form-double-group">
+        <div class="form-double-group">
             
             <div class="form-group"> 
 
-            <label>Latitud: *</label> 
+                <label>Latitud: *</label> 
 
-            <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
+                <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
 
-        </div> 
+            </div> 
 
-        <div class="form-group"> 
+            <div class="form-group"> 
 
-            <label>Longitud: *</label> 
+                <label>Longitud: *</label> 
 
-            <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
+                <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
 
-        </div> 
+            </div> 
+
+        </div>
+
+        <div class="form-double-group">
+            
+            <div class="form-group"> 
+
+                <label>Nombre de Contacto: *</label> 
+
+                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
 
             </div>
 
             <div class="form-group"> 
 
-                <label>Contacto: *</label> 
+                <label>Teléfono de Contacto: *</label> 
 
-                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
+                <input type="text" id="contact_phone_${i}" name="contact_phone_${i}"> 
 
-            </div> 
+            </div>
+
+        </div>
 
             <div class="form-group"> 
 
                 <label>Correo de contacto: *</label> 
 
                 <input type="text" id="contact_email_${i}" name="contact_email_${i}"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
+                <label>Notas: *</label> 
+
+                <textarea type="text" id="notes_${i}" name="notes_${i}"> </textarea> 
 
             </div> 
 
@@ -224,21 +252,24 @@ function crearRuta(e){
         let end_date = document.getElementById('end_date').value
         
         for (let i = 0; i < numPaquetes; i++) {
+            let idref = document.getElementById(`ref_${i + 1}`).value;
             let address = document.getElementById(`address_${i + 1}`).value;
             let lat = document.getElementById(`latitude_${i + 1}`).value;
             let lon = document.getElementById(`longitude_${i + 1}`).value;
             let contact_name = document.getElementById(`contact_name_${i + 1}`).value;
-            let contact_email= document.getElementById(`contact_email_${i + 1}`).value;
+            let contact_phone = document.getElementById(`contact_phone_${i + 1}`).value;
+            let contact_email = document.getElementById(`contact_email_${i + 1}`).value;
+            let notes = document.getElementById(`notes_${i + 1}`).value;
 
             nodos.push({
-                ident: address,
-                id: i,
-                reference: 'ref-'+i,
+                ident: idref,
                 address: address,
                 lat: lat,
                 lon: lon,
                 contact_name: contact_name,
-                contact_email: contact_email
+                contact_phone: contact_phone,
+                contact_email: contact_email,
+                notes: notes,
             });
         }
 
@@ -286,7 +317,7 @@ function crearRuta(e){
                 fmv: 1.0
             }
         };
-        console.log(55, settingsRoute)
+
         var settingsPlan = {
             async: true,
             crossDomain: true,

@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #c4c4c4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,11 +8,12 @@ body {
 }
 
 .form-container {
+    margin: 50 0 50 0;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    width: 45%;
 }
 
 form h2 {
@@ -24,9 +25,11 @@ form h2 {
 
 .form-group {
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .form-group label {
+    font-size: 20px;
     display: block;
     margin-bottom: 5px;
     color:  #5c048c
@@ -35,8 +38,18 @@ form h2 {
 
 .form-group input {
     width: 100%;
+    max-width: 100%;
     padding: 10px;
     border: 1px solid #dddddd;
+    font-size: 20px;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    font-size: 20px;
     border-radius: 4px;
 }
 
@@ -44,6 +57,7 @@ form h2 {
     width: 100%;
     padding: 10px;
     border: 1px solid #dddddd;
+    font-size: 20px;
     border-radius: 4px;
 }
 
@@ -54,7 +68,7 @@ form h2 {
     border: none;
     border-radius: 4px;
     color: white;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -72,6 +86,8 @@ form h2 {
     text-align: center;
 }
 .form-double-group{
+    width: 100%;
+    gap: 5%;
     display: flex;
     justify-content: space-between;  
 }
@@ -80,4 +96,5 @@ form h2 {
     margin-right: 0;
 }
 
-.map { height: 180px; }
+.map { height: 250px; }
+

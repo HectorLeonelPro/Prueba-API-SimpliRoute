@@ -9,39 +9,54 @@ const prueba = {
             headers: optimizar.headers,
             body: JSON.stringify(optimizar.data),
         });
-        
         const opt = await response_optimizar.json();
-
-        console.log(1, opt.vehicles[0].tours[0])
-
         plan.data.name = opt.id
-        const arr = JSON.parse(JSON.stringify(opt.vehicles[0].tours[0].nodes));
-        console.log(nodos)
-        var resp = await arr.map((item, i) => {
-            console.log(item)
-            item.reference = item.reference
-            item.address = item.ident
-            // item.ident = item.ident + '-' + i
-            // item.address = typeof item.ident == 'string' ? item.ident : nodos.find(x => x.ident == item.ident).address;
-            item.title = "Orden " + item.order
-            item.planned_date = plan.data.routes[0].planned_date
-            item.request_status = "created"
-            item.contact_name = "hector"
-            item.contact_email = ""
-            item.notes = ""
-            item.order = item.order
-            delete item.ident;
-            delete item.load;
-            delete item.load_2;
-            delete item.load_3;
-            delete item.arrival;
-            delete item.departure;
-            delete item.priority;
-            return item;
-        });
 
+        const arr = JSON.parse(JSON.stringify(opt.vehicles[0].tours[0].nodes));
+        console.log(1, nodos)
+        console.log(3, arr)
+        var resp = await arr.map((item, i) => {
+            if(i == 0){
+                console.log('partida')
+                item.title = "Partida" 
+                item.address = item.ident 
+                item.planned_date = plan.data.routes[0].planned_date
+                return item;
+            } 
+            else if(i == arr.length-1){
+                console.log('regreso')
+                item.title = "Regreso" 
+                item.address = item.ident 
+                item.planned_date = plan.data.routes[0].planned_date
+                return item;
+            }else{
+                console.log(i)
+                console.log('visitas')
+                item.reference = nodos.find(x => x.ident == item.ident).ident;
+                item.address = nodos.find(x => x.ident == item.ident).address;
+                item.title = "Orden " + item.order + '-' + item.ident
+                item.planned_date = plan.data.routes[0].planned_date
+                item.request_status = "created"
+                item.contact_name = nodos.find(x => x.ident == item.ident).contact_name;
+                item.contact_phone = nodos.find(x => x.ident == item.ident).contact_phone;
+                item.contact_email = nodos.find(x => x.ident == item.ident).contact_email;
+                item.notes = nodos.find(x => x.ident == item.ident).notes;
+                item.order = item.order
+                delete item.ident;
+                delete item.load;
+                delete item.load_2;
+                delete item.load_3;
+                delete item.arrival;
+                delete item.departure;
+                delete item.priority;
+                return item;
+            }
+        });
+        console.log(4, resp)
         resp.splice(0,1)
+        console.log(5, resp)
         plan.data.routes[0].visits = resp
+        console.log(6, plan.data)
 
         const response_plan = await fetch(plan.url, {
             method: plan.method,
@@ -49,7 +64,6 @@ const prueba = {
             body: JSON.stringify(plan.data),
         });
         const pla = await response_plan.json();
-        console.log(2, pla)
 
         res.json({opt, pla})
 
