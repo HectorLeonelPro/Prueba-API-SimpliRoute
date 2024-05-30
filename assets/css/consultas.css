@@ -1,6 +1,10 @@
+html{
+    background-color: #f4f4f4;
+
+}
 body {
     font-family: Arial, sans-serif;
-    background-color: #c4c4c4;
+    background-color: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
