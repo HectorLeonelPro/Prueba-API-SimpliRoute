@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="../assets/css/consultas.css" />
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Básico</title>
+    <link rel="stylesheet" href="../assets/css/consultas_mapbox.css">
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+     
+<script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+</head>
+
+<body>
+    <div class="form-container">
+        <form >
+            <div class="logo-container">
+                <img class="logo" src="../assets/img/logo.png">
+            </div>
+            <br>
+            <br>
+
+            {{!-- DATOS VEHICULO --}}
+            <div class="form-group">
+                <label>Conductor: *</label>
+                <select id="driver" name="driver">
+                    <option selected hidden>Elige un conductor</option>
+                    {{#each CONDUCTORES}}
+                    {{#if (eq status 'active')}}
+                    <option id="{{id}}" value="{{id}}">
+                        {{name}}
+                    </option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Vehiculo: *</label>
+                <select id="vehicle" name="vehicle" onchange="cargarSucursales()">
+                    <option selected hidden>Elige un vehiculo</option>
+                    {{#each VEHICULOS}}
+                    {{#if (eq status 'active')}}
+                    <option id="{{id}}" value="{{id}}">
+                        {{name}}
+                    </option>
+                    {{/if}}
+                    {{/each}}
+                </select>
+            </div>
+
+            <div id="formulario">
+
+                {{>formulario}}
+            </div>
+
+            {{!-- DATOS EXTRAS --}}
+            <div class="form-group">
+                <label>Fecha de Inicio: *</label>
+                <input type="date" id="start_date" name="start_date">
+            </div>
+            <div class="form-group">
+                <label>Fecha de Fin: *</label>
+                <input type="date" id="end_date" name="end_date">
+            </div>
+            <br>
+
+            <div class="form-group" style="text-align:center">
+                <label><b>PAQUETES</b></label>
+            </div>
+            <div class="form-group">
+                <label>Número de paquetes: *</label>
+                <input type="number" 
+                id="number" 
+                name="number" 
+                onchange="crearPaquetes(this.value)"
+                min="0" max="30"
+                oninput="validar(this)">
+            </div>
+            {{!-- DATOS PAQUETES --}}
+            <div id="paquetes"> 
+
+            </div>
+
+            {{!-- BOTON --}}
+
+            <div class="form-group">
+                <button onclick="crearRuta(event)">Enviar</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+
+
+<script src="../assets/js/Consultas_Mapbox
+.js"></script>

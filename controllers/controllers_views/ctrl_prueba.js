@@ -43,6 +43,35 @@ const prueba = {
             console.log(error)
             res.redirect('../pagina-no-encontrada')
         }
+    },
+    consultas_mapbox: async (req, res) => {
+        try {
+            const response_vehiculos = await fetch("https://api.simpliroute.com/v1/routes/vehicles/", {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
+                },
+
+            });
+            const response_conductores = await fetch("https://api.simpliroute.com/v1/accounts/drivers/", {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json",
+                    authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
+                },
+
+            });
+            const vehiculos= await response_vehiculos.json();
+            const conductores = await response_conductores.json();
+
+        // console.log(6485468, vehiculos)
+            res.render('consultas_mapbox', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
+
+        } catch (error) {
+            console.log(error)
+            res.redirect('../pagina-no-encontrada')
+        }
     }
 
 }

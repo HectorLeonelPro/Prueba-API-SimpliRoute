@@ -1,57 +1,4 @@
 
-
-function consultaVehiculos() {
-    console.log('click vehiculo')
-
-    var settings = {
-        async: true,
-        crossDomain: true,
-        url: "https://api.simpliroute.com/v1/routes/vehicles/",
-        method: "GET",
-        headers: {
-            "content-type": "application/json",
-            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
-        },
-    };
-    fetch(settings.url, {
-        method: `${settings.method}`,
-        headers: settings.headers,
-    }).then((response) => response.json())
-        .then((data) => {
-            console.log('vehiculos', data)
-            let vehiculos = data
-        })
-        .catch((error) => {
-            console.error("Error al hacer fetch de recibir:", error);
-        });
-}
-
-function consultaConductor() {
-    console.log('click conductor')
-
-    var settings = {
-        async: true,
-        crossDomain: true,
-        url: "https://api.simpliroute.com/v1/accounts/drivers/",
-        method: "GET",
-        headers: {
-            "content-type": "application/json",
-            authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
-        },
-    };
-    fetch(settings.url, {
-        method: `${settings.method}`,
-        headers: settings.headers,
-    }).then((response) => response.json())
-        .then((data) => {
-            console.log('conductores', data[0])
-        })
-        .catch((error) => {
-            console.error("Error al hacer fetch de recibir:", error);
-        });
-
-}
-
 async function cargarSucursales() {
 
     let id = document.getElementById('vehicle').value
@@ -141,9 +88,45 @@ function crearPaquetes(num) {
 
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
-        var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13).on('click', onMapClick);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-    ;
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA';
+    const map = new mapboxgl.Map({
+        style: 'mapbox://styles/mapbox/standard',
+        container: `map_${i}`, // container ID
+        center: [-97.85672, 22.216743], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    }).on('click', onMapClick = async (event) => {
+        console.log(event)
+        let lnglat = event.lngLat; 
+    
+        const geojson = {
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [lnglat.lng, lnglat.lat]
+                },
+                properties: {
+                  title: 'Mapbox',
+                }
+              }
+            ]
+          };
+    
+        // add markers to map
+        for (const feature of geojson.features) {
+        // create a HTML element for each feature
+        const el = document.createElement('div');
+        el.className = 'marker';
+      
+        // make a marker for each feature and add to the map
+        new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map);
+    }
+    console.log(123, geojson)
+    });
+
 
     }
 }
@@ -173,9 +156,13 @@ async function consultaGeolocalizacion(direccion, id){
     document.getElementById(`latitude_${paquete}`).value = latitude
     document.getElementById(`longitude_${paquete}`).value = longitude
     document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
-    const map = L.map(`map_${paquete}`).setView([latitude, longitude], 13).on('click', onMapClick);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-    var marker = L.marker([latitude, longitude]).addTo(map);
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA';
+    const map = new mapboxgl.Map({
+        style: 'mapbox://styles/mapbox/standard',
+        container: `map_${paquete}`, // container ID
+        center: [longitude, latitude], // starting position [lng, lat]
+        zoom: 17 // starting zoom
+    });
 }
 
 async function consultaGeolocalizacionInversa(latlng, paquete){
@@ -192,19 +179,22 @@ async function consultaGeolocalizacionInversa(latlng, paquete){
     document.getElementById(`address_${paquete}`).value = address
 }
 
-async function onMapClick(e) {
-    console.log(e)
-    let latlon = e.latlng; 
-    let paquete = e.target._container.id.split('_')[1]
+// async function onMapClick(e) {
     
-    document.getElementById(`latitude_${paquete}`).value = latlon.lat
-    document.getElementById(`longitude_${paquete}`).value = latlon.lng
-    document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
-    var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-    var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
-    await consultaGeolocalizacionInversa(latlon, paquete)
-}
+
+
+
+    
+//     // let paquete = e.target._container.id.split('_')[1]
+    
+//     // document.getElementById(`latitude_${paquete}`).value = latlon.lat
+//     // document.getElementById(`longitude_${paquete}`).value = latlon.lng
+//     // document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
+//     // var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
+//     // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+//     // var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
+//     // await consultaGeolocalizacionInversa(latlon, paquete)
+// }
 
 function crearRuta(e){
     e.preventDefault()
@@ -232,8 +222,6 @@ function crearRuta(e){
 
             nodos.push({
                 ident: address,
-                id: i,
-                reference: 'ref-'+i,
                 address: address,
                 lat: lat,
                 lon: lon,
@@ -286,7 +274,6 @@ function crearRuta(e){
                 fmv: 1.0
             }
         };
-        console.log(55, settingsRoute)
         var settingsPlan = {
             async: true,
             crossDomain: true,
@@ -328,11 +315,10 @@ function crearRuta(e){
         fetch('/envio-plan', {
             method: "POST",
             headers: {"content-type": "application/json"},
-            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan, nodos}),
+            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
         }).then((response) => response.json())
         .then((data) => {
             console.log('123', data)
-            console.log('123', settingsPlan)
             if(data.pla.status == 'completed'){
                 alert('Tu ruta ha sido creada correctamente.')
             }else{

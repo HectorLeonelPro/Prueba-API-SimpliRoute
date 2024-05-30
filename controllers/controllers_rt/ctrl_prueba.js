@@ -2,6 +2,7 @@ const prueba = {
     rt_plan: async (req, res) => {
         let optimizar = req.body.optimizar
         let plan = req.body.plan
+        let nodos = req.body.nodos
 
         const response_optimizar = await fetch(optimizar.url, {
             method: optimizar.method,
@@ -11,17 +12,23 @@ const prueba = {
         
         const opt = await response_optimizar.json();
 
+        console.log(1, opt.vehicles[0].tours[0])
+
         plan.data.name = opt.id
         const arr = JSON.parse(JSON.stringify(opt.vehicles[0].tours[0].nodes));
-        var resp = await arr.map(item => {
-            item.address = item.ident;
+        console.log(nodos)
+        var resp = await arr.map((item, i) => {
+            console.log(item)
+            item.reference = item.reference
+            item.address = item.ident
+            // item.ident = item.ident + '-' + i
+            // item.address = typeof item.ident == 'string' ? item.ident : nodos.find(x => x.ident == item.ident).address;
             item.title = "Orden " + item.order
             item.planned_date = plan.data.routes[0].planned_date
             item.request_status = "created"
-            item.contact_name = ""
+            item.contact_name = "hector"
             item.contact_email = ""
             item.notes = ""
-            item.reference = ""
             item.order = item.order
             delete item.ident;
             delete item.load;
@@ -42,8 +49,9 @@ const prueba = {
             body: JSON.stringify(plan.data),
         });
         const pla = await response_plan.json();
+        console.log(2, pla)
 
-        res.json({pla})
+        res.json({opt, pla})
 
         // res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
     },
