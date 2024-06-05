@@ -90,6 +90,30 @@ const prueba = {
             res.redirect('../pagina-no-encontrada')
         }
     },
+    rt_consulta_vehiculo_conductor: async (req, res) => {
+        const response_vehiculos = await fetch("https://api.simpliroute.com/v1/routes/vehicles/", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
+            },
+
+        });
+        const response_conductores = await fetch("https://api.simpliroute.com/v1/accounts/drivers/", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
+            },
+
+        });
+        const vehiculos= await response_vehiculos.json();
+        const conductores = await response_conductores.json();
+
+        console.log(vehiculos, conductores)
+
+        res.json({ vehiculos: vehiculos, conductores: conductores})
+    },
     rt_geolocalizacion: async (req, res) => {
         let parametro = req.body.parametro
 
