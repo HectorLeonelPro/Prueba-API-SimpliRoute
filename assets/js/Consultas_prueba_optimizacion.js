@@ -1,6 +1,4 @@
 
-
-
 function consultaVehiculos() {
     console.log('click vehiculo')
 
