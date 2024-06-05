@@ -8,6 +8,7 @@ router.get('/envio', prueba.envio)
 router.get('/resultados', prueba.resultados)
 router.get('/consultas', prueba.consultas)
 router.get('/consultas_mapbox', prueba.consultas_mapbox)
+router.get('/consultas_google', prueba.consultas_google)
 
 
 

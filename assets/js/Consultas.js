@@ -1,3 +1,4 @@
+const { text } = require("express");
 
 
 function consultaVehiculos() {
@@ -282,7 +283,7 @@ function crearRuta(e){
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
             },
             processData: false,
             data: {
@@ -325,7 +326,7 @@ function crearRuta(e){
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: "Token 2231cc69f2a133e83336f14a81a7da123575ed39",
+                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
             },
             processData: false,                              
             data:{
@@ -365,10 +366,20 @@ function crearRuta(e){
             console.log('123', data)
             console.log('123', settingsPlan)
             if(data.pla.status == 'completed'){
-                alert('Tu ruta ha sido creada correctamente.')
+                Swal.fire({
+                    icon: "success",
+                    title: "Tu ruta ha sido creada correctamente.",
+                    showConfirmButton: false,
+                    timer: 1250
+                })
             }else{
-                alert('Tu ruta no se creo.')
-    
+                Swal.fire({
+                    icon: "error",
+                    title: "Ocurrió un error al crear tu ruta.",
+                    text: data.pla.invalid_visits[0],
+                    showConfirmButton: false,
+                    timer: 1250
+                })
             }
         })
         .catch((error) => {

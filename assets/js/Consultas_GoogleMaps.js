@@ -36,6 +36,14 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
+                <label>ID de referencia: *</label> 
+
+                <input type="text" id="ref_${i}" name="ref_${i}"> 
+
+            </div> 
+
+            <div class="form-group"> 
+
                 <label>Dirección: *</label> 
 
                 <input type="text" id="address_${i}" name="address_${i}" onchange="consultaGeolocalizacion(this.value, this.id)"> 
@@ -44,37 +52,55 @@ function crearPaquetes(num) {
 
             <div class="form-group" id="mapa_${i}"> 
 
-                <div class="map" id="map_${i}"></div>
+                <gmpx-api-loader key="AIzaSyB-SdJotn7v8m_rYM1MD1jcDoKI1H1xOQU" solution-channel="GMP_GE_mapsandplacesautocomplete_v1"> </gmpx-api-loader>
+                <gmp-map center="40.749933,-73.98633" zoom="13" class="map" map-id="map_${i}">
+                    <div slot="control-block-start-inline-start" class="place-picker-container">
+                        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
+                    </div>
+                    <gmp-advanced-marker></gmp-advanced-marker>
+                </gmp-map>
 
             </div> 
 
-            <div class="form-double-group">
+        <div class="form-double-group">
             
             <div class="form-group"> 
 
-            <label>Latitud: *</label> 
+                <label>Latitud: *</label> 
 
-            <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
+                <input type="text" id="latitude_${i}" name="latitude_${i}" disabled> 
 
-        </div> 
+            </div> 
 
-        <div class="form-group"> 
+            <div class="form-group"> 
 
-            <label>Longitud: *</label> 
+                <label>Longitud: *</label> 
 
-            <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
+                <input type="text" id="longitude_${i}" name="longitude_${i}" disabled> 
 
-        </div> 
+            </div> 
+
+        </div>
+
+        <div class="form-double-group">
+            
+            <div class="form-group"> 
+
+                <label>Nombre de Contacto: *</label> 
+
+                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
 
             </div>
 
             <div class="form-group"> 
 
-                <label>Contacto: *</label> 
+                <label>Teléfono de Contacto: *</label> 
 
-                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
+                <input type="text" id="contact_phone_${i}" name="contact_phone_${i}"> 
 
-            </div> 
+            </div>
+
+        </div>
 
             <div class="form-group"> 
 
@@ -84,52 +110,25 @@ function crearPaquetes(num) {
 
             </div> 
 
+            <div class="form-group"> 
+
+                <label>Notas: *</label> 
+
+                <textarea type="text" id="notes_${i}" name="notes_${i}"> </textarea> 
+
+            </div> 
+
         </div>
 
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA';
-    const map = new mapboxgl.Map({
-        style: 'mapbox://styles/mapbox/standard',
-        container: `map_${i}`, // container ID
-        center: [-97.85672, 22.216743], // starting position [lng, lat]
-        zoom: 9 // starting zoom
-    }).on('click', onMapClick = async (event) => {
-        console.log(event)
-        let lnglat = event.lngLat; 
-    
-        const geojson = {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                geometry: {
-                  type: 'Point',
-                  coordinates: [lnglat.lng, lnglat.lat]
-                },
-                properties: {
-                  title: 'Mapbox',
-                }
-              }
-            ]
-          };
-    
-        // add markers to map
-        for (const feature of geojson.features) {
-        // create a HTML element for each feature
-        const el = document.createElement('div');
-        el.className = 'marker';
-      
-        // make a marker for each feature and add to the map
-        new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map);
-    }
-    console.log(123, geojson)
-    });
-
 
     }
 }
+
+
+
 
 function validar(input) {
     input.value = input.value.replace(/e/gi, '');
@@ -156,13 +155,9 @@ async function consultaGeolocalizacion(direccion, id){
     document.getElementById(`latitude_${paquete}`).value = latitude
     document.getElementById(`longitude_${paquete}`).value = longitude
     document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
-    mapboxgl.accessToken = 'pk.eyJ1IjoiaGVjdG9ybGVvbmVscHJvIiwiYSI6ImNsd3IxcHd2cDA4ODgyaW9wM2I4Mmx1dDgifQ.-8mhjDXTyflCG8EuzcjhoA';
-    const map = new mapboxgl.Map({
-        style: 'mapbox://styles/mapbox/standard',
-        container: `map_${paquete}`, // container ID
-        center: [longitude, latitude], // starting position [lng, lat]
-        zoom: 17 // starting zoom
-    });
+    const map = L.map(`map_${paquete}`).setView([latitude, longitude], 13).on('click', onMapClick);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    var marker = L.marker([latitude, longitude]).addTo(map);
 }
 
 async function consultaGeolocalizacionInversa(latlng, paquete){
@@ -179,22 +174,19 @@ async function consultaGeolocalizacionInversa(latlng, paquete){
     document.getElementById(`address_${paquete}`).value = address
 }
 
-// async function onMapClick(e) {
+async function onMapClick(e) {
+    console.log(e)
+    let latlon = e.latlng; 
+    let paquete = e.target._container.id.split('_')[1]
     
-
-
-
-    
-//     // let paquete = e.target._container.id.split('_')[1]
-    
-//     // document.getElementById(`latitude_${paquete}`).value = latlon.lat
-//     // document.getElementById(`longitude_${paquete}`).value = latlon.lng
-//     // document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
-//     // var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
-//     // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-//     // var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
-//     // await consultaGeolocalizacionInversa(latlon, paquete)
-// }
+    document.getElementById(`latitude_${paquete}`).value = latlon.lat
+    document.getElementById(`longitude_${paquete}`).value = latlon.lng
+    document.getElementById(`mapa_${paquete}`).innerHTML = `<div class="map" id="map_${paquete}"></div>`
+    var map = L.map(`map_${paquete}`).setView([latlon.lat, latlon.lng], e.target._zoom).on('click', onMapClick);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    var marker = L.marker([latlon.lat, latlon.lng]).addTo(map);
+    await consultaGeolocalizacionInversa(latlon, paquete)
+}
 
 function crearRuta(e){
     e.preventDefault()
@@ -214,19 +206,24 @@ function crearRuta(e){
         let end_date = document.getElementById('end_date').value
         
         for (let i = 0; i < numPaquetes; i++) {
+            let idref = document.getElementById(`ref_${i + 1}`).value;
             let address = document.getElementById(`address_${i + 1}`).value;
             let lat = document.getElementById(`latitude_${i + 1}`).value;
             let lon = document.getElementById(`longitude_${i + 1}`).value;
             let contact_name = document.getElementById(`contact_name_${i + 1}`).value;
-            let contact_email= document.getElementById(`contact_email_${i + 1}`).value;
+            let contact_phone = document.getElementById(`contact_phone_${i + 1}`).value;
+            let contact_email = document.getElementById(`contact_email_${i + 1}`).value;
+            let notes = document.getElementById(`notes_${i + 1}`).value;
 
             nodos.push({
-                ident: address,
+                ident: idref,
                 address: address,
                 lat: lat,
                 lon: lon,
                 contact_name: contact_name,
-                contact_email: contact_email
+                contact_phone: contact_phone,
+                contact_email: contact_email,
+                notes: notes,
             });
         }
 
@@ -274,6 +271,7 @@ function crearRuta(e){
                 fmv: 1.0
             }
         };
+
         var settingsPlan = {
             async: true,
             crossDomain: true,
@@ -315,15 +313,26 @@ function crearRuta(e){
         fetch('/envio-plan', {
             method: "POST",
             headers: {"content-type": "application/json"},
-            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan}),
+            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan, nodos}),
         }).then((response) => response.json())
         .then((data) => {
             console.log('123', data)
+            console.log('123', settingsPlan)
             if(data.pla.status == 'completed'){
-                alert('Tu ruta ha sido creada correctamente.')
+                Swal.fire({
+                    icon: "success",
+                    title: "Tu ruta ha sido creada correctamente.",
+                    showConfirmButton: false,
+                    timer: 1250
+                })
             }else{
-                alert('Tu ruta no se creo.')
-    
+                Swal.fire({
+                    icon: "error",
+                    title: "Ocurrió un error al crear tu ruta.",
+                    text: data.pla.invalid_visits[0],
+                    showConfirmButton: false,
+                    timer: 1250
+                })
             }
         })
         .catch((error) => {
