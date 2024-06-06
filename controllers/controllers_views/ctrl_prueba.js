@@ -15,6 +15,14 @@ const prueba = {
             res.redirect('../pagina-no-encontrada')
         }
     },
+    pruebas: async (req, res) => {
+        try {
+            res.render('pruebas')
+        } catch (error) {
+            console.log(error)
+            res.redirect('../pagina-no-encontrada')
+        }
+    },
     consultas: async (req, res) => {
         try {
             const response_vehiculos = await fetch("https://api.simpliroute.com/v1/routes/vehicles/", {
