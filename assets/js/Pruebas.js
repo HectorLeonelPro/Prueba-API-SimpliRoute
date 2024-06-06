@@ -2,7 +2,7 @@
 function consultaVehiculos(e) {
     e.preventDefault();
     let id = document.getElementById('vehicle_id').value
-   
+
 
     var settings = {
         async: true,
@@ -46,7 +46,7 @@ function consultaConductor(e) {
         headers: settings.headers,
     }).then((response) => response.json())
         .then((data) => {
-            console.log('conductor', data[0])
+            console.log('conductor', data)
         })
         .catch((error) => {
             console.error("Error al hacer fetch de recibir:", error);
@@ -73,7 +73,7 @@ function vehiculosRuta(e) {
         headers: settings.headers,
     }).then((response) => response.json())
         .then((data) => {
-            console.log('visitas de ruta', data[0])
+            console.log('visitas de ruta', data)
         })
         .catch((error) => {
             console.error("Error al hacer fetch de recibir:", error);
@@ -84,7 +84,7 @@ function vehiculosRuta(e) {
 function visitasRuta(e) {
     e.preventDefault();
     let id = document.getElementById('route_id').value
-    
+
 
     var settings = {
         async: true,
@@ -101,7 +101,7 @@ function visitasRuta(e) {
         headers: settings.headers,
     }).then((response) => response.json())
         .then((data) => {
-            console.log('ruta', data[0])
+            console.log('ruta', data)
         })
         .catch((error) => {
             console.error("Error al hacer fetch de recibir:", error);
@@ -109,14 +109,14 @@ function visitasRuta(e) {
 
 }
 
-function visitaInfo(e){
+function visitaInfo(e) {
     e.preventDefault();
     let id = document.getElementById('visit_id').value
 
     var settings = {
         async: true,
         crossDomain: true,
-        url: `https://api.simpliroute.com/plans/v1/visits/${id}/detail/`,
+        url: `https://api.simpliroute.com/v1/routes/visits/`,
         method: "GET",
         headers: {
             "content-type": "application/json",
@@ -128,10 +128,38 @@ function visitaInfo(e){
         headers: settings.headers,
     }).then((response) => response.json())
         .then((data) => {
-            console.log('conductores', data[0])
+            // console.log('visitas', data)
+            const resultado = data.find(visita => visita.reference === id);
+            console.log(resultado);
         })
         .catch((error) => {
             console.error("Error al hacer fetch de recibir:", error);
         });
+}
 
+function optimizacionInfo(e) {
+    e.preventDefault();
+    let id = document.getElementById('ident').value
+
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://optimizator.simpliroute.com/v1/optimization/metadata/distance`,
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+        },
+    };
+    fetch(settings.url, {
+        method: `${settings.method}`,
+        headers: settings.headers,
+        mode:'no-cors'
+    }).then((response) => response.json())
+        .then((data) => {
+            console.log('ruta', data)
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de recibir:", error);
+        });
 }
