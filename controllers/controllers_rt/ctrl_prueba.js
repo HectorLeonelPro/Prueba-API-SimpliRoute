@@ -90,8 +90,33 @@ const prueba = {
         });
         const vehiculos = await response_vehiculos.json();
         const conductores = await response_conductores.json();
-        // console.log(vehiculos)
-        // console.log(nodos)
+
+        let vehicles = []
+
+        const vehicles2 = JSON.parse(JSON.stringify(vehiculos));
+        var respVeh = await vehicles2.map((item, i) => {
+            vehicles.push({
+                ident: item.id,
+                location_start: {
+                    ident: item.location_start_address,
+                    lat: item.location_start_latitude,
+                    lon: item.location_start_longitude
+                },
+                location_end: {
+                    ident: item.location_end_address,
+                    lat: item.location_end_latitude,
+                    lon: item.location_end_longitude
+                },
+                capacity: item.capacity,
+                capacity_2: item.capacity_2,
+                capacity_3: item.capacity_3,
+                shift_start: "9:00",
+                shift_end: "22:00",
+                skills: item.skills,
+                })
+            return item;
+        });
+
         var settingsRoute = {
             async: true,
             crossDomain: true,
@@ -103,8 +128,8 @@ const prueba = {
             },
             processData: false,
             data: {
-                name: "546651236sdfsdf4",
-                vehicles: vehiculos,
+                name: "546651236sdfs234df4",
+                vehicles: vehicles,
                 nodes: nodos,
                 balance: true,
                 join: true,
@@ -163,7 +188,7 @@ const prueba = {
             body: JSON.stringify(settingsRoute.data),
         });
         const opt = await response_optimizar.json();
-        console.log(555, opt.errors[0])
+        console.log(555, opt)
         plan.data.name = opt.id
 
         const arr = JSON.parse(JSON.stringify(opt.vehicles[0].tours[0].nodes));
@@ -295,6 +320,9 @@ const prueba = {
             console.log(error)
             res.redirect('../pagina-no-encontrada')
         }
+    },
+    rt_plan_nacional: async (req, res) => {
+        
     },
     
 }

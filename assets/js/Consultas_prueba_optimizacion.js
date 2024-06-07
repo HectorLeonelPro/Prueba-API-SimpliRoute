@@ -1,3 +1,23 @@
+async function cargarSucursales() {
+
+    let id = document.getElementById('vehicle').value
+    
+    fetch("/rt-cargar-sucursales", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+    }).then((response) => response.json())
+        .then((data) => {
+            document.getElementById('formulario').innerHTML = data.html
+        })
+        .catch((error) => {
+            console.error("Error al cargar la información:", error);
+        });
+
+}
+
 function crearPaquetes(num) {
     let numero = parseInt(num)
     document.getElementById('paquetes').innerHTML = ''
@@ -213,12 +233,12 @@ function crearRuta(e){
         });
     }
 
-
+    console.log(nodos)
 
     fetch('/envio-plan-prueba', {
         method: "POST",
         headers: {"content-type": "application/json"},
-        body: JSON.stringify({nodos}),
+        body: JSON.stringify({nodos: nodos}),
     }).then((response) => response.json())
     .then((data) => {
         console.log('123', data)

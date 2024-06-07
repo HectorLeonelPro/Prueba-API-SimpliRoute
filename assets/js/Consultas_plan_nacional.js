@@ -1,4 +1,6 @@
 
+
+
 async function cargarSucursales() {
 
     let id = document.getElementById('vehicle').value
@@ -30,17 +32,22 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
-                <label><b>Paquete ${i}</b></label> 
+                <label><b>Destino ${i}</b></label> 
 
             </div> 
 
-            <div class="form-group"> 
+            <div class="form-group">
 
-                <label>ID de referencia: *</label> 
+                <label>Cedis: *</label>
 
-                <input type="text" id="ref_${i}" name="ref_${i}"> 
+                <select id="cedis_${i}" name="cedis_${i}" onchange="buscarCedis(this.value, this.id)">
+                    <option selected hidden>Cedis</option>
+                    <option value="1">Cedis Tampico</option>
+                    <option value="2">Cedis Reynosa</option>
+                    <option value="3">Cedis Monterrey</option>
+                </select>
 
-            </div> 
+            </div>
 
             <div class="form-group"> 
 
@@ -52,13 +59,7 @@ function crearPaquetes(num) {
 
             <div class="form-group" id="mapa_${i}"> 
 
-                <gmpx-api-loader key="AIzaSyB-SdJotn7v8m_rYM1MD1jcDoKI1H1xOQU" solution-channel="GMP_GE_mapsandplacesautocomplete_v1"> </gmpx-api-loader>
-                <gmp-map center="40.749933,-73.98633" zoom="13" class="map" map-id="map_${i}">
-                    <div slot="control-block-start-inline-start" class="place-picker-container">
-                        <gmpx-place-picker placeholder="Enter an address"></gmpx-place-picker>
-                    </div>
-                    <gmp-advanced-marker></gmp-advanced-marker>
-                </gmp-map>
+                <div class="map" id="map_${i}"></div>
 
             </div> 
 
@@ -82,53 +83,60 @@ function crearPaquetes(num) {
 
         </div>
 
-        <div class="form-double-group">
-            
-            <div class="form-group"> 
-
-                <label>Nombre de Contacto: *</label> 
-
-                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
-
-            </div>
-
-            <div class="form-group"> 
-
-                <label>Teléfono de Contacto: *</label> 
-
-                <input type="text" id="contact_phone_${i}" name="contact_phone_${i}"> 
-
-            </div>
-
-        </div>
-
-            <div class="form-group"> 
-
-                <label>Correo de contacto: *</label> 
-
-                <input type="text" id="contact_email_${i}" name="contact_email_${i}"> 
-
-            </div> 
-
-            <div class="form-group"> 
-
-                <label>Notas: *</label> 
-
-                <textarea type="text" id="notes_${i}" name="notes_${i}"> </textarea> 
-
-            </div> 
-
         </div>
 
     `
     document.getElementById('paquetes').insertAdjacentHTML('beforeend', paquete);
-
+        var map = L.map(`map_${i}`).setView([22.216743, -97.85672], 13).on('click', onMapClick);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+    ;
 
     }
 }
 
+function buscarCedis(valor, id){
+    let i = id.split('_')[1]
+    
+    const cedis_tam = {
+        address: "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
+        lat: "22.262561",
+        lon: "-97.850130",
+    }
+    const cedis_rey = {
+        address: "Blvd.las Fuentes 802, Aztlán, 88740 Reynosa, Tamps., México",
+        lat: "26.060039",
+        lon: "-98.317634",
+    }
+    const cedis_mty = {
+        address: "Av. Benito Juárez 101, Centro, 64000 Monterrey, N.L., México",
+        lat: "25.679926",
+        lon: "-100.258752",
+    }
 
-
+    switch(valor){
+        case '1':
+            console.log(1)
+            document.getElementById(`address_${i}`).value = cedis_tam.address
+            document.getElementById(`latitude_${i}`).value = cedis_tam.lat
+            document.getElementById(`longitude_${i}`).value = cedis_tam.lon
+            consultaGeolocalizacion(cedis_tam.address, id)
+            break;
+        case '2':
+            console.log(2)
+            document.getElementById(`address_${i}`).value = cedis_rey.address
+            document.getElementById(`latitude_${i}`).value = cedis_rey.lat
+            document.getElementById(`longitude_${i}`).value = cedis_rey.lon
+            consultaGeolocalizacion(cedis_rey.address, id)
+            break;
+        case '3':
+            console.log(3)
+            document.getElementById(`address_${i}`).value = cedis_mty.address
+            document.getElementById(`latitude_${i}`).value = cedis_mty.lat
+            document.getElementById(`longitude_${i}`).value = cedis_mty.lon
+            consultaGeolocalizacion(cedis_mty.address, id)
+            break;
+    }
+}
 
 function validar(input) {
     input.value = input.value.replace(/e/gi, '');
@@ -193,27 +201,12 @@ function crearRuta(e){
 
         let nodos = [];
         let numPaquetes = (document.getElementById('paquetes').children).length;
-
-        let  ident_vehicle= document.getElementById('vehicle').value
-        let  ident_start= document.getElementById('location_start_address').value
-        let  lat_start= document.getElementById('location_start_latitude').value
-        let  lon_start= document.getElementById('location_start_longitude').value
-        let  ident_end= document.getElementById('location_end_address').value
-        let  lat_end= document.getElementById('location_end_latitude').value
-        let  lon_end= document.getElementById('location_end_longitude').value
-        let  driver = document.getElementById('driver').value
-        let start_date = document.getElementById('start_date').value
-        let end_date = document.getElementById('end_date').value
         
         for (let i = 0; i < numPaquetes; i++) {
             let idref = document.getElementById(`ref_${i + 1}`).value;
             let address = document.getElementById(`address_${i + 1}`).value;
             let lat = document.getElementById(`latitude_${i + 1}`).value;
             let lon = document.getElementById(`longitude_${i + 1}`).value;
-            let contact_name = document.getElementById(`contact_name_${i + 1}`).value;
-            let contact_phone = document.getElementById(`contact_phone_${i + 1}`).value;
-            let contact_email = document.getElementById(`contact_email_${i + 1}`).value;
-            let notes = document.getElementById(`notes_${i + 1}`).value;
 
             nodos.push({
                 ident: idref,
@@ -264,7 +257,7 @@ function crearRuta(e){
                 ],
                 nodes: nodos,
                 balance: true,
-                all_vehicles: false,
+                all_vehicles: true,
                 join: true,
                 open_ended: false,
                 single_tour: true,
