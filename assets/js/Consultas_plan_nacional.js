@@ -1,3 +1,6 @@
+
+
+
 async function cargarSucursales() {
 
     let id = document.getElementById('vehicle').value
@@ -29,17 +32,22 @@ function crearPaquetes(num) {
 
             <div class="form-group"> 
 
-                <label><b>Paquete ${i}</b></label> 
+                <label><b>Destino ${i}</b></label> 
 
             </div> 
 
-            <div class="form-group"> 
+            <div class="form-group">
 
-                <label>ID de referencia: *</label> 
+                <label>Cedis: *</label>
 
-                <input type="text" id="ref_${i}" name="ref_${i}"> 
+                <select id="cedis_${i}" name="cedis_${i}" onchange="buscarCedis(this.value, this.id)">
+                    <option selected hidden>Cedis</option>
+                    <option value="1">Cedis Tampico</option>
+                    <option value="2">Cedis Reynosa</option>
+                    <option value="3">Cedis Monterrey</option>
+                </select>
 
-            </div> 
+            </div>
 
             <div class="form-group"> 
 
@@ -75,54 +83,6 @@ function crearPaquetes(num) {
 
         </div>
 
-        <div class="form-double-group">
-            
-            <div class="form-group"> 
-
-                <label>Nombre de Contacto: *</label> 
-
-                <input type="text" id="contact_name_${i}" name="contact_name_${i}"> 
-
-            </div>
-
-            <div class="form-group"> 
-
-                <label>Teléfono de Contacto: *</label> 
-
-                <input type="text" id="contact_phone_${i}" name="contact_phone_${i}"> 
-
-            </div>
-
-        </div>
-
-        <div class="form-double-group">
-                
-            <div class="form-group"> 
-
-                <label>Correo de contacto: *</label> 
-
-                <input type="text" id="contact_email_${i}" name="contact_email_${i}"> 
-
-            </div> 
-
-            <div class="form-group"> 
-
-                <label>Cubicaje del paquete: *</label> 
-
-                <input type="text" id="load_${i}" name="load_${i}"> 
-
-            </div> 
-
-        </div> 
-
-            <div class="form-group"> 
-
-                <label>Notas: *</label> 
-
-                <textarea type="text" id="notes_${i}" name="notes_${i}"> </textarea> 
-
-            </div> 
-
         </div>
 
     `
@@ -134,6 +94,47 @@ function crearPaquetes(num) {
     }
 }
 
+function buscarCedis(valor, id){
+    let i = id.split('_')[1]
+    
+    const cedis_tam = {
+        address: "Blvrd A. López Mateos 604, Nuevo Aeropuerto, 89337 Tampico, Tamps., México",
+        lat: "22.288048",
+        lon: "-97.870772",
+    }
+    const cedis_rey = {
+        address: "Blvd.las Fuentes 802, Aztlán, 88740 Reynosa, Tamps., México",
+        lat: "26.0704046",
+        lon: "-98.3215182",
+    }
+    const cedis_mty = {
+        address: "Av. Benito Juárez 101, Centro, 64000 Monterrey, Nuevo Leon, México",
+        lat: "25.66703",
+        lon: "-100.31084",
+    }
+
+    switch(valor){
+        case '1':
+            document.getElementById(`address_${i}`).value = cedis_tam.address
+            document.getElementById(`latitude_${i}`).value = cedis_tam.lat
+            document.getElementById(`longitude_${i}`).value = cedis_tam.lon
+            consultaGeolocalizacion(cedis_tam.address, id)
+            break;
+        case '2':
+            document.getElementById(`address_${i}`).value = cedis_rey.address
+            document.getElementById(`latitude_${i}`).value = cedis_rey.lat
+            document.getElementById(`longitude_${i}`).value = cedis_rey.lon
+            consultaGeolocalizacion(cedis_rey.address, id)
+            break;
+        case '3':
+            document.getElementById(`address_${i}`).value = cedis_mty.address
+            document.getElementById(`latitude_${i}`).value = cedis_mty.lat
+            document.getElementById(`longitude_${i}`).value = cedis_mty.lon
+            consultaGeolocalizacion(cedis_mty.address, id)
+            break;
+    }
+}
+
 function validar(input) {
     input.value = input.value.replace(/e/gi, '');
     input.value = input.value.replace(/-/g, '');
@@ -141,10 +142,9 @@ function validar(input) {
 
 async function consultaGeolocalizacion(direccion, id){
     let parametro = direccion
-    parametro.replace(' ', '%')
-    parametro.replace(',', '%,')
+    parametro = parametro.replace(/ /g, '%')
+    parametro = parametro.replace(/,/g, '%,')
     let paquete = id.split('_')[1]
-
     const data = await fetch(`/geolocalizacion`, {
         method: "POST",
         headers: {"content-type": "application/json"},
@@ -192,76 +192,56 @@ async function onMapClick(e) {
     await consultaGeolocalizacionInversa(latlon, paquete)
 }
 
-function crearRuta(e){
+async function crearRuta(e){
     e.preventDefault()
 
-    let nodos = [];
-    let numPaquetes = (document.getElementById('paquetes').children).length;
+        let nodos = [];
+        let numPaquetes = (document.getElementById('paquetes').children).length;
+        let salida = document.getElementById(`salida`).options[document.getElementById(`salida`).selectedIndex].text
 
-    let  ident_vehicle= document.getElementById('vehicle').value
-    let  ident_start= document.getElementById('location_start_address').value
-    let  lat_start= document.getElementById('location_start_latitude').value
-    let  lon_start= document.getElementById('location_start_longitude').value
-    let  ident_end= document.getElementById('location_end_address').value
-    let  lat_end= document.getElementById('location_end_latitude').value
-    let  lon_end= document.getElementById('location_end_longitude').value
-    let  driver = document.getElementById('driver').value
-    let start_date = document.getElementById('start_date').value
-    let end_date = document.getElementById('end_date').value
-    
-    for (let i = 0; i < numPaquetes; i++) {
-        let idref = document.getElementById(`ref_${i + 1}`).value;
-        let address = document.getElementById(`address_${i + 1}`).value;
-        let lat = document.getElementById(`latitude_${i + 1}`).value;
-        let lon = document.getElementById(`longitude_${i + 1}`).value;
-        let contact_name = document.getElementById(`contact_name_${i + 1}`).value;
-        let contact_phone = document.getElementById(`contact_phone_${i + 1}`).value;
-        let contact_email = document.getElementById(`contact_email_${i + 1}`).value;
-        let load = document.getElementById(`notes_${i + 1}`).value;
-        let notes = document.getElementById(`notes_${i + 1}`).value;
+        for (let i = 0; i < numPaquetes; i++) {
+            let idref = document.getElementById(`cedis_${i + 1}`).options[document.getElementById(`cedis_${i + 1}`).selectedIndex].text;
+            let address = document.getElementById(`address_${i + 1}`).value;
+            let lat = document.getElementById(`latitude_${i + 1}`).value;
+            let lon = document.getElementById(`longitude_${i + 1}`).value;
 
-        nodos.push({
-            ident: idref,
-            address: address,
-            lat: lat,
-            lon: lon,
-            contact_name: contact_name,
-            contact_phone: contact_phone,
-            contact_email: contact_email,
-            load: load,
-            notes: notes,
-        });
-    }
-
-    console.log(nodos)
-
-    fetch('/envio-plan-prueba', {
-        method: "POST",
-        headers: {"content-type": "application/json"},
-        body: JSON.stringify({nodos: nodos}),
-    }).then((response) => response.json())
-    .then((data) => {
-        console.log('123', data)
-        console.log('123', settingsPlan)
-        if(data.pla.status == 'completed'){
-            Swal.fire({
-                icon: "success",
-                title: "Tu ruta ha sido creada correctamente.",
-                showConfirmButton: false,
-                timer: 1250
-            })
-        }else{
-            Swal.fire({
-                icon: "error",
-                title: "Ocurrió un error al crear tu ruta.",
-                text: data.pla.invalid_visits[0],
-                showConfirmButton: false,
-                timer: 1250
-            })
+            nodos.push({
+                ident: idref,
+                address: address,
+                lat: lat,
+                lon: lon,
+            });
         }
-    })
-    .catch((error) => {
-        console.error("Error al hacer fetch de envío1:", error);
-    });
+
+        console.log(99999,nodos)
+    
+        fetch('/envio-plan-nacional', {
+            method: "POST",
+            headers: {"content-type": "application/json"},
+            body: JSON.stringify({salida: salida, nodos: nodos}),
+        }).then((response) => response.json())
+        .then((data) => {
+            console.log('123', data)
+            console.log('123', settingsPlan)
+            if(data.pla.status == 'completed'){
+                Swal.fire({
+                    icon: "success",
+                    title: "Tu ruta ha sido creada correctamente.",
+                    showConfirmButton: false,
+                    timer: 1250
+                })
+            }else{
+                Swal.fire({
+                    icon: "error",
+                    title: "Ocurrió un error al crear tu ruta.",
+                    text: data.pla.invalid_visits[0],
+                    showConfirmButton: false,
+                    timer: 1250
+                })
+            }
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de envío1:", error);
+        });
 
 }
