@@ -322,7 +322,197 @@ const prueba = {
         }
     },
     rt_plan_nacional: async (req, res) => {
+        let nodos = req.body.nodos
+        let salidaa = 'Entrega_Nacional_'+req.body.salida.split(' ')[1]
+
+        console.log(salidaa)
+
+        const response_vehiculos = await fetch("https://api.simpliroute.com/v1/routes/vehicles/", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+            },
+
+        });
+        const response_conductores = await fetch("https://api.simpliroute.com/v1/accounts/drivers/", {
+            method: "GET",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+            },
+
+        });
+        const vehiculos = await response_vehiculos.json();
+        const conductores = await response_conductores.json();
+
+        let vehicles = []
+
+        const vehicles2 = JSON.parse(JSON.stringify(vehiculos));
+        var respVeh = await vehicles2.map((item, i) => {
+            if(item.name.includes(salidaa)){
+                vehicles.push({
+                    ident: item.id,
+                    location_start: {
+                        ident: item.location_start_address,
+                        lat: item.location_start_latitude,
+                        lon: item.location_start_longitude
+                    },
+                    location_end: {
+                        ident: item.location_end_address,
+                        lat: item.location_end_latitude,
+                        lon: item.location_end_longitude
+                    },
+                    capacity: item.capacity,
+                    capacity_2: item.capacity_2,
+                    capacity_3: item.capacity_3,
+                    shift_start: "9:00",
+                    shift_end: "22:00",
+                    skills: item.skills,
+                    })
+            }
+            return item;
+        });
+        console.log(vehicles)
+        console.log(nodos)
+        var settingsRoute = {
+            async: true,
+            crossDomain: true,
+            url: "https://optimizator.simpliroute.com/vrp/optimize/sync/",
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+            },
+            processData: false,
+            data: {
+                name: "546651236sdfs234df4",
+                vehicles: vehicles,
+                nodes: nodos,
+                balance: true,
+                open_ended: true,
+                single_tour: true,
+                fmv: 1.0
+            }
+        };
+
+        const response_optimizar = await fetch(settingsRoute.url, {
+            method: settingsRoute.method,
+            headers: settingsRoute.headers,
+            body: JSON.stringify(settingsRoute.data),
+        });
+        const opt = await response_optimizar.json();
+        console.log(555, opt.vehicles[0].tours[0].nodes)
+
+        opt.vehicles[0].tours[0].nodes.splice(0, 1)
+        opt.vehicles[0].tours[0].nodes.splice((opt.vehicles[0].tours[0].nodes.length) - 1, 1)
+
+
+        console.log(555, opt.vehicles[0].tours[0].nodes)
+
+
         
+        let nombre = 'Ruta_Nacional_'+req.body.salida.split(' ')[1]+'_'
+        opt.vehicles[0].tours[0].nodes.map(item => nombre = nombre+item.ident.split(' ')[1]+'_')
+        const date = new Date();
+        nombre = nombre + date.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}).replace(/ /g, '_');
+
+        var settingsPlan = {
+            async: true,
+            crossDomain: true,
+            url: "https://api.simpliroute.com/v1/plans/create-plan/",
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
+            },
+            processData: false,                              
+            data:{
+                name: nombre,
+                routes: [
+                    {
+                    driver: driver,
+                    vehicle: vehicles[0].ident,
+                    planned_date: start_date,
+                    estimated_time_start: "08:00:00",
+                    estimated_time_end: "19:40:00",
+                    request_status: "created",
+                    location_start_address: ident_start,
+                    location_start_latitude: lat_start, 
+                    location_start_longitude: lon_start,
+                    location_end_address: ident_end,
+                    location_end_latitude: lat_end,
+                    location_end_longitude:lon_end ,
+                    visits: [
+                        
+                    ], 
+                    balance: true, 
+                    fmv:2.0,
+                    use_euclidean_distance:true, 
+                    intensive_intra:true 
+                    }
+                ]
+                }
+        };
+
+
+
+        plan.data.name = opt.id
+
+        const arr = JSON.parse(JSON.stringify(opt.vehicles[0].tours[0].nodes));
+        console.log(1, nodos)
+        console.log(3, arr)
+        var resp = await arr.map((item, i) => {
+            if(i == 0){
+                console.log('partida')
+                item.title = "Partida" 
+                item.address = item.ident 
+                item.planned_date = plan.data.routes[0].planned_date
+                return item;
+            } 
+            else if(i == arr.length-1){
+                console.log('regreso')
+                item.title = "Regreso" 
+                item.address = item.ident 
+                item.planned_date = plan.data.routes[0].planned_date
+                return item;
+            }else{
+                console.log(i)
+                console.log('visitas')
+                item.reference = nodos.find(x => x.ident == item.ident).ident;
+                item.address = nodos.find(x => x.ident == item.ident).address;
+                item.title = "Orden " + item.order + '-' + item.ident
+                item.planned_date = plan.data.routes[0].planned_date
+                item.request_status = "created"
+                item.contact_name = nodos.find(x => x.ident == item.ident).contact_name;
+                item.contact_phone = nodos.find(x => x.ident == item.ident).contact_phone;
+                item.contact_email = nodos.find(x => x.ident == item.ident).contact_email;
+                item.notes = nodos.find(x => x.ident == item.ident).notes;
+                item.order = item.order
+                delete item.ident;
+                delete item.load;
+                delete item.load_2;
+                delete item.load_3;
+                delete item.arrival;
+                delete item.departure;
+                delete item.priority;
+                return item;
+            }
+        });
+        console.log(4, resp)
+        resp.splice(0,1)
+        console.log(5, resp)
+        plan.data.routes[0].visits = resp
+        console.log(6, plan.data)
+
+        const response_plan = await fetch(plan.url, {
+            method: plan.method,
+            headers: plan.headers,
+            body: JSON.stringify(plan.data),
+        });
+        const pla = await response_plan.json();
+
+        res.json({opt, pla})
     },
     
 }

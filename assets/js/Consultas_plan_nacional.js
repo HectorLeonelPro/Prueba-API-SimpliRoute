@@ -98,38 +98,35 @@ function buscarCedis(valor, id){
     let i = id.split('_')[1]
     
     const cedis_tam = {
-        address: "Boulevard Adolfo López Mateos #604 Piso 1, Supermanzana Sector Sur, Nuevo Aeropuerto, 89337 Tampico, Tamps.",
-        lat: "22.262561",
-        lon: "-97.850130",
+        address: "Blvrd A. López Mateos 604, Nuevo Aeropuerto, 89337 Tampico, Tamps., México",
+        lat: "22.288048",
+        lon: "-97.870772",
     }
     const cedis_rey = {
         address: "Blvd.las Fuentes 802, Aztlán, 88740 Reynosa, Tamps., México",
-        lat: "26.060039",
-        lon: "-98.317634",
+        lat: "26.0704046",
+        lon: "-98.3215182",
     }
     const cedis_mty = {
-        address: "Av. Benito Juárez 101, Centro, 64000 Monterrey, N.L., México",
-        lat: "25.679926",
-        lon: "-100.258752",
+        address: "Av. Benito Juárez 101, Centro, 64000 Monterrey, Nuevo Leon, México",
+        lat: "25.66703",
+        lon: "-100.31084",
     }
 
     switch(valor){
         case '1':
-            console.log(1)
             document.getElementById(`address_${i}`).value = cedis_tam.address
             document.getElementById(`latitude_${i}`).value = cedis_tam.lat
             document.getElementById(`longitude_${i}`).value = cedis_tam.lon
             consultaGeolocalizacion(cedis_tam.address, id)
             break;
         case '2':
-            console.log(2)
             document.getElementById(`address_${i}`).value = cedis_rey.address
             document.getElementById(`latitude_${i}`).value = cedis_rey.lat
             document.getElementById(`longitude_${i}`).value = cedis_rey.lon
             consultaGeolocalizacion(cedis_rey.address, id)
             break;
         case '3':
-            console.log(3)
             document.getElementById(`address_${i}`).value = cedis_mty.address
             document.getElementById(`latitude_${i}`).value = cedis_mty.lat
             document.getElementById(`longitude_${i}`).value = cedis_mty.lon
@@ -145,10 +142,9 @@ function validar(input) {
 
 async function consultaGeolocalizacion(direccion, id){
     let parametro = direccion
-    parametro.replace(' ', '%')
-    parametro.replace(',', '%,')
+    parametro = parametro.replace(/ /g, '%')
+    parametro = parametro.replace(/,/g, '%,')
     let paquete = id.split('_')[1]
-
     const data = await fetch(`/geolocalizacion`, {
         method: "POST",
         headers: {"content-type": "application/json"},
@@ -196,14 +192,15 @@ async function onMapClick(e) {
     await consultaGeolocalizacionInversa(latlon, paquete)
 }
 
-function crearRuta(e){
+async function crearRuta(e){
     e.preventDefault()
 
         let nodos = [];
         let numPaquetes = (document.getElementById('paquetes').children).length;
-        
+        let salida = document.getElementById(`salida`).options[document.getElementById(`salida`).selectedIndex].text
+
         for (let i = 0; i < numPaquetes; i++) {
-            let idref = document.getElementById(`ref_${i + 1}`).value;
+            let idref = document.getElementById(`cedis_${i + 1}`).options[document.getElementById(`cedis_${i + 1}`).selectedIndex].text;
             let address = document.getElementById(`address_${i + 1}`).value;
             let lat = document.getElementById(`latitude_${i + 1}`).value;
             let lon = document.getElementById(`longitude_${i + 1}`).value;
@@ -213,100 +210,15 @@ function crearRuta(e){
                 address: address,
                 lat: lat,
                 lon: lon,
-                contact_name: contact_name,
-                contact_phone: contact_phone,
-                contact_email: contact_email,
-                notes: notes,
             });
         }
 
         console.log(99999,nodos)
-
-           var settingsRoute = {
-            async: true,
-            crossDomain: true,
-            url: "https://optimizator.simpliroute.com/vrp/optimize/sync/",
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
-            },
-            processData: false,
-            data: {
-                name: "5466564",
-                vehicles: [
-                    {
-                        ident: ident_vehicle,
-                        location_start: {
-                            ident: ident_start,
-                            lat: lat_start,
-                            lon: lon_start
-                        },
-                        location_end: {
-                            ident: ident_end,
-                            lat: lat_end,
-                            lon: lon_end
-                        },
-                        capacity: 3500,
-                        capacity_2: 3500,
-                        capacity_3: 3500,
-                        shift_start: "9:00",
-                        shift_end: "22:00",
-                        skills: []
-                    }
-                ],
-                nodes: nodos,
-                balance: true,
-                all_vehicles: true,
-                join: true,
-                open_ended: false,
-                single_tour: true,
-                fmv: 1.0
-            }
-        };
-
-        var settingsPlan = {
-            async: true,
-            crossDomain: true,
-            url: "https://api.simpliroute.com/v1/plans/create-plan/",
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
-            },
-            processData: false,                              
-            data:{
-                name: "",
-                routes: [
-                  {
-                    driver: driver,
-                    vehicle: ident_vehicle,
-                    planned_date: start_date,
-                    estimated_time_start: "08:00:00",
-                    estimated_time_end: "19:40:00",
-                    request_status: "created",
-                    location_start_address: ident_start,
-                    location_start_latitude: lat_start, 
-                    location_start_longitude: lon_start,
-                    location_end_address: ident_end,
-                    location_end_latitude: lat_end,
-                    location_end_longitude:lon_end ,
-                    visits: [
-                        
-                    ], 
-                    balance: true, 
-                    fmv:2.0,
-                    use_euclidean_distance:true, 
-                    intensive_intra:true 
-                  }
-                ]
-              }
-        };
     
-        fetch('/envio-plan', {
+        fetch('/envio-plan-nacional', {
             method: "POST",
             headers: {"content-type": "application/json"},
-            body: JSON.stringify({optimizar: settingsRoute, plan: settingsPlan, nodos}),
+            body: JSON.stringify({salida: salida, nodos: nodos}),
         }).then((response) => response.json())
         .then((data) => {
             console.log('123', data)
