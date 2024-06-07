@@ -81,7 +81,7 @@ const prueba = {
             res.redirect('../pagina-no-encontrada')
         }
     },
-    consultas_mapbox: async (req, res) => {
+    consultas_plan_nacional: async (req, res) => {
         try {
             const response_vehiculos = await fetch("https://api.simpliroute.com/v1/routes/vehicles/", {
                 method: "GET",
@@ -103,7 +103,7 @@ const prueba = {
             const conductores = await response_conductores.json();
 
         // console.log(6485468, vehiculos)
-            res.render('consultas_mapbox', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
+            res.render('consultas_plan_nacional', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
 
         } catch (error) {
             console.log(error)
