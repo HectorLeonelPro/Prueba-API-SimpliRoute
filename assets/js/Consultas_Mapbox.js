@@ -239,7 +239,7 @@ function crearRuta(e){
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
+                authorization: "Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c",
             },
             processData: false,
             data: {
@@ -281,7 +281,7 @@ function crearRuta(e){
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
+                authorization: "Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c",
             },
             processData: false,                              
             data:{

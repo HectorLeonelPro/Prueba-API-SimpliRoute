@@ -146,7 +146,7 @@ const prueba = {
         //     method: "POST",
         //     headers: {
         //         "content-type": "application/json",
-        //         authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
+        //         authorization: "Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c",
         //     },
         //     processData: false,                              
         //     data:{
@@ -331,7 +331,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
 
         });
@@ -339,7 +339,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
 
         });
@@ -382,7 +382,7 @@ const prueba = {
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
             processData: false,
             data: {
@@ -424,7 +424,7 @@ const prueba = {
             method: "POST",
             headers: {
                 "content-type": "application/json",
-                authorization: "Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495",
+                authorization: "Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c",
             },
             processData: false,                              
             data:{
@@ -525,7 +525,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
                 "cookie": "csrftoken=wPpv3zupt3OZSPjEgzvby2tR276abyxZQa8vE82T04dMrnlx3nWEol7Rc9swogD3"
             },
         };
@@ -550,7 +550,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
@@ -574,7 +574,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
@@ -598,7 +598,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
@@ -622,7 +622,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
@@ -646,7 +646,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
@@ -671,7 +671,7 @@ const prueba = {
             method: "GET",
             headers: {
                 "content-type": "application/json",
-                authorization: `Token 7d52c18aaeb322b0c1a3bf9bcb481ae9ee029495`,
+                authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
         fetch(settings.url, {
