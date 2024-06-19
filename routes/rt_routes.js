@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { prueba } = require('../controllers/controllers_rt/ctrl_prueba')
+const { descarga } = require('../controllers/controllers_rt/ctrl_descarga')
+
 
 router.post('/envio-plan', prueba.rt_plan)
 router.post('/envio-plan-prueba', prueba.rt_plan_prueba)
@@ -18,5 +20,6 @@ router.post('/busca_visitas_ruta', prueba.rt_visitas_ruta)
 router.post('/busca_visitas_info', prueba.rt_visitas_info)
 router.post('/busca_optimizacion_distancia', prueba.rt_optimizacion_distancia)
 router.post('/busca_ruta', prueba.rt_consulta_ruta)
+router.post('/inserta_datos', descarga.insertar)
 
 module.exports = router;

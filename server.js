@@ -5,6 +5,7 @@ const hbs=require('hbs');
 const path=require('path');
 const app=express();
 const port=process.env.PORT || 3000
+
 // const init = require('./config/sesion_seq');
 
 app.set('view engine','hbs');
@@ -22,7 +23,7 @@ app.use(express.static(path.join(__dirname,'/')));
 // app.use(init())
 
 app.use(require('./routes/rt_index'))
-
+// app.set('port', port)
 // app.use('*', (req, res) => {  
 //     res.redirect('./views/error_404/index-v1');
 // });

@@ -16,20 +16,20 @@ const prueba = {
         console.log(1, nodos)
         console.log(3, arr)
         var resp = await arr.map((item, i) => {
-            if(i == 0){
+            if (i == 0) {
                 console.log('partida')
-                item.title = "Partida" 
-                item.address = item.ident 
+                item.title = "Partida"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            } 
-            else if(i == arr.length-1){
+            }
+            else if (i == arr.length - 1) {
                 console.log('regreso')
-                item.title = "Regreso" 
-                item.address = item.ident 
+                item.title = "Regreso"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            }else{
+            } else {
                 console.log(i)
                 console.log('visitas')
                 item.reference = nodos.find(x => x.ident == item.ident).ident;
@@ -53,7 +53,7 @@ const prueba = {
             }
         });
         console.log(4, resp)
-        resp.splice(0,1)
+        resp.splice(0, 1)
         console.log(5, resp)
         plan.data.routes[0].visits = resp
         console.log(6, plan.data)
@@ -65,7 +65,7 @@ const prueba = {
         });
         const pla = await response_plan.json();
 
-        res.json({opt, pla})
+        res.json({ opt, pla })
 
         // res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
     },
@@ -113,7 +113,7 @@ const prueba = {
                 shift_start: "9:00",
                 shift_end: "22:00",
                 skills: item.skills,
-                })
+            })
             return item;
         });
 
@@ -166,7 +166,7 @@ const prueba = {
         //             location_end_latitude: lat_end,
         //             location_end_longitude:lon_end ,
         //             visits: [
-                        
+
         //             ], 
         //             balance: true, 
         //             fmv:2.0,
@@ -176,7 +176,7 @@ const prueba = {
         //         ]
         //         }
         // };
-    
+
 
 
         // let optimizar = req.body.optimizar
@@ -195,20 +195,20 @@ const prueba = {
         console.log(1, nodos)
         console.log(3, arr)
         var resp = await arr.map((item, i) => {
-            if(i == 0){
+            if (i == 0) {
                 console.log('partida')
-                item.title = "Partida" 
-                item.address = item.ident 
+                item.title = "Partida"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            } 
-            else if(i == arr.length-1){
+            }
+            else if (i == arr.length - 1) {
                 console.log('regreso')
-                item.title = "Regreso" 
-                item.address = item.ident 
+                item.title = "Regreso"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            }else{
+            } else {
                 console.log(i)
                 console.log('visitas')
                 item.reference = nodos.find(x => x.ident == item.ident).ident;
@@ -232,7 +232,7 @@ const prueba = {
             }
         });
         console.log(4, resp)
-        resp.splice(0,1)
+        resp.splice(0, 1)
         console.log(5, resp)
         plan.data.routes[0].visits = resp
         console.log(6, plan.data)
@@ -244,11 +244,11 @@ const prueba = {
         });
         const pla = await response_plan.json();
 
-        res.json({opt, pla})
+        res.json({ opt, pla })
 
         // res.render('consultas', { VEHICULOS: vehiculos, CONDUCTORES:conductores  });
     },
-    rt_consulta_sucursales: async (req,res) => {
+    rt_consulta_sucursales: async (req, res) => {
         try {
             const response = await fetch(`https://api.simpliroute.com/v1/routes/vehicles/${req.body.id}`, {
                 method: "GET",
@@ -257,12 +257,12 @@ const prueba = {
                     authorization: `Token ${process.env.SIMPLIROUTE_KEY}`,
                 },
             });
-            const informacion= await response.json();
+            const informacion = await response.json();
 
-        res.render('partials/formulario', { INFORMACION : informacion}, (error, html) => {
-            res.json({ INFORMACION : informacion, html })
-        })
-           
+            res.render('partials/formulario', { INFORMACION: informacion }, (error, html) => {
+                res.json({ INFORMACION: informacion, html })
+            })
+
         } catch (error) {
             console.log(error)
             res.redirect('../pagina-no-encontrada')
@@ -285,10 +285,10 @@ const prueba = {
             },
 
         });
-        const vehiculos= await response_vehiculos.json();
+        const vehiculos = await response_vehiculos.json();
         const conductores = await response_conductores.json();
 
-        res.json({ vehiculos: vehiculos, conductores: conductores})
+        res.json({ vehiculos: vehiculos, conductores: conductores })
     },
     rt_geolocalizacion: async (req, res) => {
         let parametro = req.body.parametro
@@ -296,7 +296,7 @@ const prueba = {
         try {
             const response = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?q=${parametro}&limit=1&access_token=${process.env.MAPBOX_KEY}`, {
                 method: "GET",
-                headers: {"content-type": "application/json",},
+                headers: { "content-type": "application/json", },
             });
             const informacion = await response.json();
             res.json({ geo: informacion })
@@ -308,11 +308,11 @@ const prueba = {
     rt_geolocalizacion_inversa: async (req, res) => {
         let lat = req.body.latlng.lat
         let lon = req.body.latlng.lng
-        
+
         try {
             const response = await fetch(`https://api.mapbox.com/search/geocode/v6/reverse?&longitude=${lon}&latitude=${lat}&limit=1&access_token=${process.env.MAPBOX_KEY}`, {
                 method: "GET",
-                headers: {"content-type": "application/json",},
+                headers: { "content-type": "application/json", },
             });
             const informacion = await response.json();
             res.json({ geo: informacion })
@@ -323,7 +323,7 @@ const prueba = {
     },
     rt_plan_nacional: async (req, res) => {
         let nodos = req.body.nodos
-        let salidaa = 'Entrega_Nacional_'+req.body.salida.split(' ')[1]
+        let salidaa = 'Entrega_Nacional_' + req.body.salida.split(' ')[1]
 
         console.log(salidaa)
 
@@ -350,7 +350,7 @@ const prueba = {
 
         const vehicles2 = JSON.parse(JSON.stringify(vehiculos));
         var respVeh = await vehicles2.map((item, i) => {
-            if(item.name.includes(salidaa)){
+            if (item.name.includes(salidaa)) {
                 vehicles.push({
                     ident: item.id,
                     location_start: {
@@ -369,7 +369,7 @@ const prueba = {
                     shift_start: "9:00",
                     shift_end: "22:00",
                     skills: item.skills,
-                    })
+                })
             }
             return item;
         });
@@ -411,11 +411,11 @@ const prueba = {
         console.log(555, opt.vehicles[0].tours[0].nodes)
 
 
-        
-        let nombre = 'Ruta_Nacional_'+req.body.salida.split(' ')[1]+'_'
-        opt.vehicles[0].tours[0].nodes.map(item => nombre = nombre+item.ident.split(' ')[1]+'_')
+
+        let nombre = 'Ruta_Nacional_' + req.body.salida.split(' ')[1] + '_'
+        opt.vehicles[0].tours[0].nodes.map(item => nombre = nombre + item.ident.split(' ')[1] + '_')
         const date = new Date();
-        nombre = nombre + date.toLocaleDateString('en-GB', {day: 'numeric', month: 'short', year: 'numeric'}).replace(/ /g, '_');
+        nombre = nombre + date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).replace(/ /g, '_');
 
         var settingsPlan = {
             async: true,
@@ -426,33 +426,33 @@ const prueba = {
                 "content-type": "application/json",
                 authorization: "Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c",
             },
-            processData: false,                              
-            data:{
+            processData: false,
+            data: {
                 name: nombre,
                 routes: [
                     {
-                    driver: driver,
-                    vehicle: vehicles[0].ident,
-                    planned_date: start_date,
-                    estimated_time_start: "08:00:00",
-                    estimated_time_end: "19:40:00",
-                    request_status: "created",
-                    location_start_address: ident_start,
-                    location_start_latitude: lat_start, 
-                    location_start_longitude: lon_start,
-                    location_end_address: ident_end,
-                    location_end_latitude: lat_end,
-                    location_end_longitude:lon_end ,
-                    visits: [
-                        
-                    ], 
-                    balance: true, 
-                    fmv:2.0,
-                    use_euclidean_distance:true, 
-                    intensive_intra:true 
+                        driver: driver,
+                        vehicle: vehicles[0].ident,
+                        planned_date: start_date,
+                        estimated_time_start: "08:00:00",
+                        estimated_time_end: "19:40:00",
+                        request_status: "created",
+                        location_start_address: ident_start,
+                        location_start_latitude: lat_start,
+                        location_start_longitude: lon_start,
+                        location_end_address: ident_end,
+                        location_end_latitude: lat_end,
+                        location_end_longitude: lon_end,
+                        visits: [
+
+                        ],
+                        balance: true,
+                        fmv: 2.0,
+                        use_euclidean_distance: true,
+                        intensive_intra: true
                     }
                 ]
-                }
+            }
         };
 
 
@@ -463,20 +463,20 @@ const prueba = {
         console.log(1, nodos)
         console.log(3, arr)
         var resp = await arr.map((item, i) => {
-            if(i == 0){
+            if (i == 0) {
                 console.log('partida')
-                item.title = "Partida" 
-                item.address = item.ident 
+                item.title = "Partida"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            } 
-            else if(i == arr.length-1){
+            }
+            else if (i == arr.length - 1) {
                 console.log('regreso')
-                item.title = "Regreso" 
-                item.address = item.ident 
+                item.title = "Regreso"
+                item.address = item.ident
                 item.planned_date = plan.data.routes[0].planned_date
                 return item;
-            }else{
+            } else {
                 console.log(i)
                 console.log('visitas')
                 item.reference = nodos.find(x => x.ident == item.ident).ident;
@@ -500,7 +500,7 @@ const prueba = {
             }
         });
         console.log(4, resp)
-        resp.splice(0,1)
+        resp.splice(0, 1)
         console.log(5, resp)
         plan.data.routes[0].visits = resp
         console.log(6, plan.data)
@@ -512,7 +512,7 @@ const prueba = {
         });
         const pla = await response_plan.json();
 
-        res.json({opt, pla})
+        res.json({ opt, pla })
     },
 
     rt_consulta_ruta: async (req, res) => {
@@ -637,8 +637,38 @@ const prueba = {
                 console.error("Error al hacer fetch de recibir:", error);
             });
     },
+    // rt_visitas_info: async (req, res) => {
+    //     let id = req.body.id
+    //     var settings = {
+    //         async: true,
+    //         crossDomain: true,
+    //         url: `https://api.simpliroute.com/v1/routes/visits/`,
+    //         method: "GET",
+    //         headers: {
+    //             "content-type": "application/json",
+    //             authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
+    //         },
+    //     };
+    //     fetch(settings.url, {
+    //         method: `${settings.method}`,
+    //         headers: settings.headers,
+
+    //     }).then((response) => response.json())
+    //     .then((data) => {
+    //         const resultado = data.find(visita => visita.tracking_id);
+    //         const visit_id = resultado.id;
+    //         console.log('visitas',data);
+    //         //console.log('visita especifica',resultado);
+    //         //console.log('VISIT_ID:', visit_id)
+
+    //          return res.json({visit_id})
+    //     })
+    //         .catch((error) => {
+    //             console.error("Error al hacer fetch de recibir:", error);
+    //         });
+    // },
     rt_visitas_info: async (req, res) => {
-        let id = req.body.id
+        let id = req.body.id;
         var settings = {
             async: true,
             crossDomain: true,
@@ -649,19 +679,35 @@ const prueba = {
                 authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
             },
         };
+
         fetch(settings.url, {
             method: `${settings.method}`,
             headers: settings.headers,
-
-        }).then((response) => response.json())
+        })
+            .then((response) => response.json())
             .then((data) => {
-                const resultado = data.find(visita => visita.reference === id);
-                console.log('visita',resultado);
+                console.log('TODAS LAS VISITAS', data)
+                console.log('-----------------------------------------------------')
+                data.forEach(visita => {
+                    let visitaId = visita.id || 'NO EXISTE';
+                    let trackingId = visita.tracking_id || 'NO EXISTE';
+                    let routeId = visita.route || 'NO EXISTE';
+                    let reference = visita.reference || 'NO EXISTE';
+                    console.log('ID: ', visita.id);
+                    console.log('TRACKING ID: ', visita.tracking_id);
+                    console.log( 'ID ROUTE: ', visita.route);
+                    console.log( 'REFERENCE:', visita.reference);
+                  
+
+                });
+
+
             })
             .catch((error) => {
                 console.error("Error al hacer fetch de recibir:", error);
             });
     },
+
     rt_optimizacion_distancia: async (req, res) => {
         let id = req.body.id
         var settings = {
@@ -680,14 +726,14 @@ const prueba = {
 
         }).then((response) => response.json())
             .then((data) => {
-                console.log('distancia',data);
+                console.log('distancia', data);
             })
             .catch((error) => {
                 console.error("Error al hacer fetch de recibir:", error);
             });
     },
 
-    
+
 }
 
 module.exports = { prueba };

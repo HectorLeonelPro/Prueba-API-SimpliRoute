@@ -250,6 +250,9 @@ function visitaInfo(e) {
         headers: {"content-type": "application/json"},
         body: JSON.stringify({id})
         }).then((response) => (response.json()))
+        .then((visit_id) => {
+            console.log('VISIT_ID',visit_id)
+        })
         .catch((error) => {
             console.error("Error al hacer fetch de buscar ruta:", error);
         });
