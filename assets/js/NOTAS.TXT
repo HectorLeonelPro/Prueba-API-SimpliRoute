@@ -432,3 +432,276 @@ function guardardatos() {
         });
 
 }
+
+
+//este no se que onda pero ayer jalaba 
+
+ function guardardatos() {
+    console.log('INICIO');
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://api.simpliroute.com/v1/routes/visits/`,
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
+        },
+    };
+
+    try {
+        const response =  fetch(settings.url, {
+            method: `${settings.method}`,
+            headers: settings.headers,
+        });
+        const data =  response.json();
+
+
+        for (let visita of data) {
+            console.log('ENTRO')
+            let visitaId = visita.id || 'NO EXISTE';
+            let trackingId = visita.tracking_id || 'NO EXISTE';
+            let routeId = visita.route || 'NO EXISTE';
+            let reference = visita.reference || 'NO EXISTE';
+             descarga.insertardatos();
+            
+        }
+
+    } catch (error) {
+        console.error("Error al hacer fetch de recibir:", error);
+    }
+}
+
+//ULTIMO QUE OCUPE Y JALO 
+
+const iniciarDescargaInformacion = () => {
+    let ejecutarProceso = () => {
+        guardardatos((response3) => {
+            setTimeout(() => {
+                ejecutarProceso()
+            }, 5000)
+        })
+    }
+    try {
+        ejecutarProceso()
+    } catch (error) {
+        ejecutarProceso()
+    }
+}
+
+setTimeout(() => {
+    iniciarDescargaInformacion()
+}, 1000)
+
+
+function guardardatos() {
+
+    console.log('INICIO')
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://api.simpliroute.com/v1/routes/visits/`,
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
+        },
+    };
+
+
+    fetch(settings.url, {
+        method: `${settings.method}`,
+        headers: settings.headers,
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            data.forEach(visita => {
+                let visitaId = visita.id || 'NO EXISTE';
+                let trackingId = visita.tracking_id || 'NO EXISTE';
+                let routeId = visita.route || 'NO EXISTE';
+                let reference = visita.reference || 'NO EXISTE';
+                console.log('ID: ', visitaId);
+                console.log('TRACKING ID: ', trackingId);
+                console.log('ID ROUTE: ', routeId);
+                console.log('REFERENCE:', reference);
+            });
+
+        })
+        .catch((error) => {
+            console.error("Error al hacer fetch de recibir:", error);
+        });
+
+}
+
+
+//con await 
+
+const { descarga } = require('../../db/db')
+
+const iniciarDescargaInformacion = () => {
+    let ejecutarProceso = () => {
+        guardardatos((response3) => {
+            setTimeout(() => {
+                ejecutarProceso()
+            }, 5000)
+        })
+    }
+    try {
+        ejecutarProceso()
+    } catch (error) {
+        ejecutarProceso()
+    }
+}
+
+setTimeout(() => {
+    iniciarDescargaInformacion()
+}, 1000)
+
+
+async function guardardatos() {
+    console.log('INICIO');
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://api.simpliroute.com/v1/routes/visits/`,
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
+        },
+    };
+
+    try {
+        const response = await fetch(settings.url, {
+            method: `${settings.method}`,
+            headers: settings.headers,
+        });
+        const data = await response.json();
+        console
+
+
+        for (const visita of data) {
+            console.log('ENTRO')
+            let visitaId = visita.id || 'NO EXISTE';
+            let trackingId = visita.tracking_id || 'NO EXISTE';
+            let routeId = visita.route || 'NO EXISTE';
+            let reference = visita.reference || 'NO EXISTE';
+            await descarga.insertardatos();
+        }
+
+    } catch (error) {
+        console.error("Error al hacer fetch de recibir:", error);
+    }
+}
+
+
+//este si jalo con ayuda de Papá Dios 
+const { descarga } = require('../../db/db')
+
+// const iniciarDescargaInformacion = () => {
+//     let ejecutarProceso = () => {
+//         guardardatos((response3) => {
+//             setTimeout(() => {
+//                 ejecutarProceso()
+//             }, 5000)
+//         })
+//     }
+//     try {
+//         ejecutarProceso()
+//     } catch (error) {
+//         ejecutarProceso()
+//     }
+// }
+
+// setTimeout(() => {
+//     iniciarDescargaInformacion()
+// }, 1000)
+
+const iniciarDescargaInformacion = () => {
+    let ejecutarProceso = async () => {
+        try {
+            await guardardatos();
+        } catch (error) {
+            console.error("Error en ejecutarProceso:", error);
+        } finally {
+            setTimeout(() => {
+                ejecutarProceso();
+            }, 5000);
+        }
+    }
+
+    ejecutarProceso();
+}
+
+setTimeout(() => {
+    iniciarDescargaInformacion();
+}, 1000);
+
+
+async function guardardatos() {
+    console.log('INICIO');
+    var settings = {
+        async: true,
+        crossDomain: true,
+        url: `https://api.simpliroute.com/v1/routes/visits/`,
+        method: "GET",
+        headers: {
+            "content-type": "application/json",
+            authorization: `Token 1a996e86d0145cb987b28b8dddfacaecc6a2629c`,
+        },
+    };
+
+    try {
+        const response = await fetch(settings.url, {
+            method: `${settings.method}`,
+            headers: settings.headers,
+        });
+        const data = await response.json();
+        
+
+        for (const visita of data) {
+            console.log('ENTRO')
+            let visitaId = visita.id || 'NO EXISTE';
+            let trackingId = visita.tracking_id || 'NO EXISTE';
+            let routeId = visita.route || 'NO EXISTE';
+            let reference = visita.reference || 'NO EXISTE';
+
+            // await descarga.insertardatos()
+            let datos = (await descarga.insertardatos()).datos
+            console.log(datos)
+        }
+
+    } catch (error) {
+        console.error("Error al hacer fetch de recibir:", error);
+    }
+}
+
+
+const { sql, sqlConn, sqlFormatoRespuesta } = require('../config/conexion')
+
+
+const descarga = {
+
+    insertardatos: async (data) => {
+
+
+        try {
+            let resultado = await sqlConn.request()
+                .query(`
+                		SELECT 
+                        (ID_REFERENCIA_SE) 
+                        FROM 
+                        SOLICITUDES_ENVIOS_T_PRUEBA
+                		`)
+            return sqlFormatoRespuesta(resultado)
+            // console.log('hola')
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+}
+
+module.exports = {
+    descarga
+}

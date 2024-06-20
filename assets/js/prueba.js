@@ -1,24 +1,43 @@
+const { descarga } = require('../../db/db')
 
-const {descarga} = require('../../db/db')
+// const iniciarDescargaInformacion = () => {
+//     let ejecutarProceso = () => {
+//         guardardatos((response3) => {
+//             setTimeout(() => {
+//                 ejecutarProceso()
+//             }, 5000)
+//         })
+//     }
+//     try {
+//         ejecutarProceso()
+//     } catch (error) {
+//         ejecutarProceso()
+//     }
+// }
+
+// setTimeout(() => {
+//     iniciarDescargaInformacion()
+// }, 1000)
 
 const iniciarDescargaInformacion = () => {
-    let ejecutarProceso = () => {
-        guardardatos((response3) => {
+    let ejecutarProceso = async () => {
+        try {
+            await guardardatos();
+        } catch (error) {
+            console.error("Error en ejecutarProceso:", error);
+        } finally {
             setTimeout(() => {
-                ejecutarProceso()
-            }, 5000)
-        })
+                ejecutarProceso();
+            }, 2000);
+        }
     }
-    try {
-        ejecutarProceso()
-    } catch (error) {
-        ejecutarProceso()
-    }
+
+    ejecutarProceso();
 }
 
 setTimeout(() => {
-    iniciarDescargaInformacion()
-}, 1000)
+    iniciarDescargaInformacion();
+}, 1000);
 
 
 async function guardardatos() {
@@ -40,24 +59,22 @@ async function guardardatos() {
             headers: settings.headers,
         });
         const data = await response.json();
-
-        console.log(data)
+        
 
         for (const visita of data) {
+            console.log('ENTRO')
             let visitaId = visita.id || 'NO EXISTE';
             let trackingId = visita.tracking_id || 'NO EXISTE';
             let routeId = visita.route || 'NO EXISTE';
             let reference = visita.reference || 'NO EXISTE';
 
-        
-                console.log('ENTRO')
-                await descarga.insertardatos();
-          
+            // await descarga.insertardatos({visitaId,trackingId,routeId,reference})
+            let datos = (await descarga.insertardatos({visitaId,trackingId,routeId,reference})).datos[0].RESULT
+            console.log(datos)
         }
 
-
-       
     } catch (error) {
         console.error("Error al hacer fetch de recibir:", error);
     }
 }
+
